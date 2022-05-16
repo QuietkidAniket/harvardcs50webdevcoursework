@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Css and Sass demo</title>
+        <meta name = "viewport" width = "device-width, initial-scale = 1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+       
+        <style>
+        #logo{
+            margin-left : 15px;
+            width : 80px;
+            height : 38px;            
+        }    
+        #heading{
+            font-family: "Google Sans","Roboto","RobotoDraft",Helvetica,Arial,sans-serif;
+            position : fixed;
+            left : 45px; 
+            font-weight : 500;
+            font-size: 21px;
+            color : rgb(219, 25, 25);                         
+        }
+        #box{
+            --boxlpos : 210px;
+            --tboxwidth : 480px;
+            --tboxheight : 30px;
+            --boxtpad : 8px;
+            font-family: "Google Sans","Roboto","RobotoDraft",Helvetica,Arial,sans-serif;
+            position : fixed;
+            border-top : 0.005px solid rgb(241, 238, 238);            
+            padding-top : 40px;
+            padding-left : 45px;
+            font-weight: normal;
+            font-size : 13px;
+        }         
+        .subheadings{
+            font-family: "Google Sans","Roboto","RobotoDraft",Helvetica,Arial,sans-serif;
+            font-size : 16px;
+        }
+        </style>
+    </head>
+    <bod style = "margin : 10px;">
+        <div>
+            <a href = "index.html"><button type = "button" class = "btn btn-light btn-outline-secondary" style = "position: fixed; right : 2% ;top : 10px">Google Search</button></a>
+            <a href = "imagesearch.html"><button type = "button" class = "btn btn-light btn-outline-secondary" style = "position: fixed; right : 2% ;top : 50px">Image Search</button></a>
+        </div>
+        <div >                                
+            <img src = "googlelogo.png" id = "logo" >
+            <div style = "height : 30px"></div>
+            <h2 id = "heading">Advanced Search</h2>
+            <div style = "height : 50px"></div> 
+            <div>    
+                
+                <form class = "input-group mb-3" action = "https://www.google.com/search" id = "box">
+                    <label class="subheadings" aria-valuetext="Find pages with">Find pages with...</label>  
+                    <div class="input-group mb-3" style = "padding-top : 20px; width : 100%; padding-right : 100px;">
+
+                        all these words:          
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : var(--tboxwidth); position:fixed; left : var(--boxlpos);" name = "as_q" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3" style = "padding-top : var(--boxtpad); width : 100%; padding-right : 100px;">
+
+                        this exact word or phrase:          
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : var(--tboxwidth); position:fixed; left : var(--boxlpos);" name = "as_epq" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3" style = "padding-top :var(--boxtpad); width : 100%; padding-right : 100px;">
+
+                        any of these words:         
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : var(--tboxwidth);; position:fixed; left : var(--boxlpos);" name = "as_oq" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3" style = "padding-top : var(--boxtpad); width : 100%; padding-right : 100px;">
+
+                        none of these words:          
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : var(--tboxwidth); position:fixed; left : var(--boxlpos);" name = "as_eq" aria-describedby="basic-addon3">
+                    </div>
+                    <div class="input-group mb-3" style = "padding-top : var(--boxtpad); width : 100%; padding-right : 100px; padding-bottom : 20px">
+
+                        numbers ranging from:          
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : 220px; position:fixed; left : var(--boxlpos);" name = "as_nlo" aria-describedby="basic-addon3">
+                        <label style = "position : fixed; left : 445px"> to  </label>     
+                        <input type="text" class="form-control" style = "height : var(--tboxheight); width : 220px; position:fixed; left : 470px;" name = "as_nhi" aria-describedby="basic-addon3">
+
+                    </div>  
+                    <div class="input-group mb-3" style = "padding-top : var(--boxtpad); width : 100%; padding-right : 100px;">
+                    <input type="submit" value = "Advanced Search"class="form-control" style = "height : 32px; width : 160px; position:fixed; left : 530px; font-size : 13px; color : white; background-color: #3079ed;" name = "submit" aria-describedby="submit button">                    
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
