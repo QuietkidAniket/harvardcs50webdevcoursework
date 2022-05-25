@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>Hello</title>
+        <script type = "text/javascript">
+            document.addEventListener('DOMContentLoaded', function(){
+                document.querySelector('form').onsubmit = prompt;
+            });
+            function prompt(){
+                alert(`Hello, ${document.querySelector('#Name').value}`);
+            }
+            function display(){
+                document.write(" This is shown as text ");
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="display()">Click here to view some text</button>
+        <form>
+            
+            <input type = "text" autofocus="true" id = "Name" placeholder = "Your name">
+            <input type = "submit" value = "submit">
+        </form>
+    </body>

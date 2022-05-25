@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Hello CSS</title>
+        <meta name = "viewport" content = "width-device-width, initial-scale = 1.0">   <style>  
+                  
+        #grid{
+        display : grid;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size : 15px;
+        margin : auto;
+        padding : 20px;
+        background-color: aqua;
+        border : 3px solid blue;
+        grid-column-gap: 20px;
+        grid-row-gap : 20px;
+        grid-template-columns : auto auto auto;
+        }
+        .grid-item{
+        background-color: white ;
+        font-size : 15px;
+        padding : 20px;
+        text-align : center;
+        }
+            
+        </style>
+    </head>
+    <body>
+        <form>
+        <div id = "grid">
+                            <div class="grid-item">
+                    <input type = "text" placeholder = "Your First Name" name = "First Name">
+                    
+                </div>
+                <div class = "grid-item">
+                    <input type = "text" placeholder = "Your Last name" name = "Last Name">
+                </div>
+                <div class = "grid-item" id = "passwordinput">
+                    <label name = "Password">Password</label>
+                    <input type = "password" name = "passw">
+                    <input type="checkbox" onclick="myFunction()">Show Password
+                   
+                </div>
+                <div class = "grid-item">
+                    <input type = "submit" name = "submit">
+                </div>
+                <div class = "grid-item" id = "gender">
+                    <label value = "Gender">Gender :</label>
+                    <div>
+                        <input type = "radio" name = "gender" value = "male">Male
+                        <input type = "radio" name = "gender" value = "female">Female
+                        <input type = "radio" name = "gender" value = "non-binary">Non-Binary
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </body>
+</html>
