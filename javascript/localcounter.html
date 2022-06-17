@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head lang = "en">
+       <title>local Counter demo</title> 
+       <script>
+          if(!localStorage.getItem('counter')) {
+
+            // If not, set the counter to 0 in local storage
+            localStorage.setItem('counter', 0);
+        }
+        function count(){
+            let counter = localStorage.getItem('counter')
+            counter++;
+            document.querySelector('h1').innerHTML = counter;
+            localStorage.setItem('counter',counter);
+        }
+        document.addEventListener('DOMContentLoaded',function(){
+            // doubt whether this statement works .....
+            document.querySelector('h1').innerHTMl = localStorage.getItem('counter');
+
+            //changes the value of h1 header to the value of counter.
+            document.querySelector('#btn').onclick = count;
+            document.querySelector('#nouse').onclick = null;
+        });
+       </script>
+    </head>
+    <body>
+        <h1>here the counter will be shown</h1>
+        <button id = "btn">count</button>
+        <button id = "nouse">no use</button>
+    </body>
+</html>
