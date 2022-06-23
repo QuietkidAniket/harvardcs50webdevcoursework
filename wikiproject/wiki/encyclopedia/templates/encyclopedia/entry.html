@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %} 
+    <div style = "margin-left : 80%; margin-top : 0%">
+        <a href = "edit{{ title }}">edit {{ title }}</a>
+    </div>
+    <div>
+        {% load markdownify %}
+        {{ entry | markdownify }}
+    </div>
+
+{% endblock %}
