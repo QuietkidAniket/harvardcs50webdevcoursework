@@ -1,0 +1,20 @@
+#all the tables have a id column which is the primary key with auto-increment
+
+flights  has foreign key- code from airportcodes as origin and destination.
+
+airportcodes  has codes for airports.
+
+people  having first and last   ... names.
+
+passengers  has foreign key first name from people as person_id and id from flights as flight_id.
+
+#there exists a many-many relationship between flights and people with 
+passengers as the association table as one person can be on many flights and one fligth may have many people.
+
+
+join query :
+SELECT first, origin, destination FROM flights JOIN passengers ON
+passengers.flight_id = flights.id;
+
+-> we performed an inner join where we ignore the rows which have no
+matches between the tables. 
