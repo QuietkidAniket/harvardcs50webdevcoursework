@@ -10,6 +10,11 @@ from .models import User
 def index(request):
     return render(request, "auctions/index.html")
 
+def listing(request, title):
+    listing = Listing.objects.get(title = title)
+    return render(request, "auctions/listing.html", {
+        "listing"  : listing
+    })
 
 def login_view(request):
     if request.method == "POST":
