@@ -1,7 +1,16 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    <div>
+    {% for listing in activelistings %}
+        {% with title=listing.title %}
+            <div style = "padding : 5px; height : 200px; margin-top : 2%; margin : 1%; color : black; border : 1px rgb(160, 160, 160) solid; border-radius: 2px;">
+                <img src= "{{ listing.defaultimage.picture.url }}" style = "padding-top : 5px; height : 180px; width : 200px">
+                <strong><a href = "{% url 'listing' title %}">{{ listing.title }}</a></strong>
+            </div>
+        {% endwith %}
+    {% endfor %}
+    </div>
 {% endblock %}
