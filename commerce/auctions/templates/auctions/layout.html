@@ -2,13 +2,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    {% block head %}
+    
     <head>
         <title>{% block title %}Auctions{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        {% block head %}
+        {% endblock %}
     </head>
-    {% endblock %}
+    
+    {% block header %}
     <body>
         <h1>Auctions</h1>
         <div>
@@ -26,6 +29,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
+               
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Log In</a>
@@ -36,6 +40,7 @@
             {% endif %}
         </ul>
         <hr>
+        {% endblock %}
         {% block body %}
         {% endblock %}
     </body>

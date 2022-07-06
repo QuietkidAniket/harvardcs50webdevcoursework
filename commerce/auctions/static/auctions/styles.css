@@ -3,6 +3,7 @@ body {
 }
 
 a:hover{
+    text-decoration: none;
     color : rgb(56, 121, 218);
     opacity: 1;
     transform: scale(1.2);

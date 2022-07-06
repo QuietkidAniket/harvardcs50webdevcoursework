@@ -1,5 +1,13 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/index.html" %}
+
 {% block body %}
     <h2>{{ listing.title }}</h2>
-    
+    {% if iswatching %}
+        <div style = "background-color : grey; color : white">Watchlist</div>
+    {% endif %}
+    <img src= "/commerce/auctions/media/images/logo.png" style = "margin-top : 5px; height : 500px; width : 400px" alt="no file found" >
+    <div>
+        {{ listing.title }}
+    </div>
 {% endblock %}
+    

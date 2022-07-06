@@ -6,16 +6,32 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Listing, Comment, Category, Bid, Picture
 
-
 def index(request):
+    if not request.user.is_authenticated :
+        return HttpResponseRedirect("login")
+    watchlistlength = len(list(request.user.spectators_list.all()))
     listings = Listing.objects.exclude(flactive = False).all()
-
+    for listing in listings:
+        defaultimage = listing.get_pictures.first()
+        if request.user in listing.spectators.all() :
+            listing.watching = True
+        else :
+            listing.watching = False
+    categories = Category.objects.all()
     return render(request, "auctions/index.html", {
-        "activelistings" : listings
+        "heading" : "Active Listings",
+        "defaultimage" : defaultimage,
+        "activelistings" : listings,
+        "categories" : categories,
+        "watchlistlength" : watchlistlength,
+        "error_message": "No Active Listings"
     })
+
 
 @login_required
 def listing(request, title):
+    watchlist = request.user.spectators_list.all()
+    watchlistlength = len(watchlist)
     listing = Listing.objects.get(title = title)
     if request.user in listing.spectators.all() :
         listing.watching = True
@@ -23,10 +39,39 @@ def listing(request, title):
         listing.watching = False
     return render(request, "auctions/listing.html", {
         "listing"  : listing,
+        "watchlistlength" : watchlistlength,
         "iswatching" : listing.watching
     })
 
+def newlisting(request):
+    pass
 
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/categories.html", {
+        "categories" : categories
+    })
+
+def categorylistings(request, category_name):
+    watchlistlength = len(list(request.user.spectators_list.all()))
+    listings = Listing.objects.filter(category = Category.objects.get(category = category_name).id).all()  
+    return render(request, "auctions/categorylistings.html", {
+        "heading" : f"{category_name}",
+        "watchlistlength": watchlistlength,
+        "activelistings":listings,
+        "category_name" : category_name,
+        "error_message" : "No listings under this category"
+    })
+
+def watchlist(request):
+    watchlist = request.user.spectators_list.all()
+    watchlistlength = len(watchlist)
+    return render(request, "auctions/watchlist.html", {
+        "heading" : "Watchlist",
+        "watchlist" : watchlist,
+        "watchlistlength" : watchlistlength,
+        "error_message":"No Active listing in your watchlist"
+    })
 
 
 def login_view(request):
