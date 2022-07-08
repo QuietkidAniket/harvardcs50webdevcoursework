@@ -1,0 +1,52 @@
+{% extends "auctions/index.html" %}
+
+{% block body %}
+    <h1>Add new Listing</h1>
+    <form action = "{% url 'newlisting' %}" method = "post">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Title </span>
+        </div>
+        <input type="text" name="title" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1">
+    </div>
+      
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Description</span>
+        </div>
+        <textarea class="form-control" aria-label="description" name="description" ></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon2">Picture URL </span>
+        </div>
+        <input type="text" name="picture" class="picture" placeholder="URL from any site" aria-label="Picture URL" aria-describedby="basic-addon1">
+    </div>
+
+   
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon4">Starting Bid : </span>
+        </div>
+        <br>
+        <input type="number" name= "startingBid" id = "bid" min="0" max="10000000" step="1" >
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon4">Category </span>
+        </div>
+        <select name = "category">
+            {% for category in categories %}
+                <option value = "{{ category.category }}">{{ category.category }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class=  "input-group mb-3" style = "width : 80px">
+        <input type = "submit" class="form-control" value = "Submit" >
+    </div>
+    </form>
+
+{% endblock %}

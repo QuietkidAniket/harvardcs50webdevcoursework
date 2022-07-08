@@ -3,11 +3,14 @@
 {% block body %}
     <h2>{{ listing.title }}</h2>
     {% if iswatching %}
-        <div style = "background-color : grey; color : white">Watchlist</div>
+        <div style = "background-color : grey; color : white">Watching</div>
     {% endif %}
-    <img src= "/commerce/auctions/media/images/logo.png" style = "margin-top : 5px; height : 500px; width : 400px" alt="no file found" >
-    <div>
+    <img src= "{{ listing.picture }}" style = "position : relative; left: 10%; margin-top : 5px; max-height : 30%; max-width : 60%" alt="no file found" >
+    <div style = "position: relative; left: 30%; font-weight: 600; ">
         {{ listing.title }}
+    </div>
+    <div style = "position: relative; left : 50%">
+        <input class = "btn primary" type = "button" value = "Add to watchlist" name = "addtowatchlist" style = "background-color:rgb(10, 127, 182); color : white" onclick = >
     </div>
 {% endblock %}
     

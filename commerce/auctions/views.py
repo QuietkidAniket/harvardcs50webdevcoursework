@@ -1,10 +1,12 @@
+from django.forms import ModelForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing, Comment, Category, Bid, Picture
+from .models import User, Listing, Comment, Category, Bid
+
 
 def index(request):
     if not request.user.is_authenticated :
@@ -12,7 +14,6 @@ def index(request):
     watchlistlength = len(list(request.user.spectators_list.all()))
     listings = Listing.objects.exclude(flactive = False).all()
     for listing in listings:
-        defaultimage = listing.get_pictures.first()
         if request.user in listing.spectators.all() :
             listing.watching = True
         else :
@@ -20,13 +21,27 @@ def index(request):
     categories = Category.objects.all()
     return render(request, "auctions/index.html", {
         "heading" : "Active Listings",
-        "defaultimage" : defaultimage,
         "activelistings" : listings,
         "categories" : categories,
         "watchlistlength" : watchlistlength,
         "error_message": "No Active Listings"
     })
 
+def categorylistings(request, category_name):
+    watchlistlength = len(list(request.user.spectators_list.all()))
+    listings = Listing.objects.filter(category = Category.objects.get(category = category_name).id).all()  
+    return render(request, "auctions/categorylistings.html", {
+        "heading" : f"{category_name}",
+        "watchlistlength": watchlistlength,
+        "activelistings":listings,
+        "category_name" : category_name,
+        "error_message" : "No listings under this category"
+    })
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/categories.html", {
+        "categories" : categories
+    })
 
 @login_required
 def listing(request, title):
@@ -44,24 +59,16 @@ def listing(request, title):
     })
 
 def newlisting(request):
-    pass
-
-def categories(request):
-    categories = Category.objects.all()
-    return render(request, "auctions/categories.html", {
-        "categories" : categories
-    })
-
-def categorylistings(request, category_name):
-    watchlistlength = len(list(request.user.spectators_list.all()))
-    listings = Listing.objects.filter(category = Category.objects.get(category = category_name).id).all()  
-    return render(request, "auctions/categorylistings.html", {
-        "heading" : f"{category_name}",
-        "watchlistlength": watchlistlength,
-        "activelistings":listings,
-        "category_name" : category_name,
-        "error_message" : "No listings under this category"
-    })
+    form = request.POST
+    if request.method == 'POST':    
+        creator = request.user
+        newlisting = Listing(title = request.POST['title'], category = Category.objects.get(category = request.POST['category']),description = request.POST['description'], creator = creator, startingBid = request.POST['startingBid'], picture= request.POST["picture"]) 
+        newlisting.save()
+        return HttpResponseRedirect(reverse("index"))
+    else:  
+        return render(request, 'auctions/newlisting.html',{ "categories": Category.objects.all()})
+        
+     
 
 def watchlist(request):
     watchlist = request.user.spectators_list.all()

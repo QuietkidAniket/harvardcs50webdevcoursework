@@ -18,6 +18,7 @@ class Listing(m.Model):
    description = m.CharField(max_length= 500)
    startingBid = m.FloatField()
    currentBid = m.FloatField(blank = True, null= True)
+   picture = m.URLField(blank = True, default="")
    creator = m.ForeignKey(User, on_delete = m.CASCADE, related_name = "creators_list")
    spectators = m.ManyToManyField(User, blank = True, related_name = "spectators_list")
    buyer = m.ForeignKey(User, null = True, blank=True, on_delete = m.PROTECT)
@@ -44,7 +45,7 @@ class Comment(m.Model):
     def __str__(self):
         return f"{self.listing} | {self.comment} by {self.user} ({self.creationdate})"
 
-class Picture(m.Model):
-    listing = m.ForeignKey(Listing, on_delete = m.CASCADE, related_name = "get_pictures")
-    image = m.ImageField(upload_to="images/")
-    alt_text = m.CharField(max_length=128)
+#class Picture(m.Model):
+ #   listing = m.ForeignKey(Listing, on_delete = m.CASCADE, related_name = "get_pictures")
+  #  image = m.ImageField(upload_to="images/")
+   # alt_text = m.CharField(max_length=128)
