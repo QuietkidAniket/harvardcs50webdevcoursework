@@ -6,18 +6,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Listing, Comment, Category, Bid
-
-
+from django.utils import timezone
 def index(request):
-    if not request.user.is_authenticated :
-        return HttpResponseRedirect("login")
-    watchlistlength = len(list(request.user.spectators_list.all()))
+    watchlistlength = None
     listings = Listing.objects.exclude(flactive = False).all()
-    for listing in listings:
-        if request.user in listing.spectators.all() :
-            listing.watching = True
-        else :
-            listing.watching = False
+    if request.user.is_authenticated :
+        watchlistlength = len(list(request.user.spectators_list.all()))
+        for listing in listings:
+            if request.user in listing.spectators.all() :
+                listing.watching = True
+            else :
+                listing.watching = False
+    
     categories = Category.objects.all()
     return render(request, "auctions/index.html", {
         "heading" : "Active Listings",
@@ -43,21 +43,35 @@ def categories(request):
         "categories" : categories
     })
 
-@login_required
-def listing(request, title):
-    watchlist = request.user.spectators_list.all()
-    watchlistlength = len(watchlist)
-    listing = Listing.objects.get(title = title)
-    if request.user in listing.spectators.all() :
-        listing.watching = True
-    else :
-        listing.watching = False
+
+def listing(request, id):
+    watchlistlength = None
+    listing = Listing.objects.get(pk = id)
+    listing.watching = False
+    message = ""
+    if not listing.flactive :
+        message =  f"{listing.buyer} has won the auction with the final Bid of ${listing.currentBid}"
+    if request.user.is_authenticated:
+        watchlist = request.user.spectators_list.all()
+        watchlistlength = len(watchlist)
+        if request.user in listing.spectators.all() :
+            listing.watching = True
+        else :
+            listing.watching = False
+        if request.user == listing.buyer:
+            message = f"You have won the auction with the final Bid of ${listing.currentBid}"
+    comments = Comment.objects.filter(listing = listing).all()
+
     return render(request, "auctions/listing.html", {
         "listing"  : listing,
         "watchlistlength" : watchlistlength,
-        "iswatching" : listing.watching
+        "iswatching" : listing.watching,
+        "id" : listing.pk,
+        "comments" : comments,
+        "message" : message
     })
 
+@login_required
 def newlisting(request):
     form = request.POST
     if request.method == 'POST':    
@@ -67,15 +81,55 @@ def newlisting(request):
         return HttpResponseRedirect(reverse("index"))
     else:  
         return render(request, 'auctions/newlisting.html',{ "categories": Category.objects.all()})
-        
-     
+
+
+def closeauction(request, id):
+    listing = Listing.objects.get(pk = id)
+    bids = Bid.objects.filter(auction = listing).all()
+    winner_bid = None
+    for bid in bids:
+        print(bid)
+        if bid.offer == listing.currentBid :
+            listing.buyer = bid.user
+    listing.flactive = False
+    listing.save()
+    return HttpResponseRedirect(reverse("listing", args = [id])) 
+
+def bid(request, id):
+    if request.method == "POST":
+        listing = Listing.objects.get(pk = id)
+        bidobj = Bid(auction = listing, user = request.user, offer = float(request.POST["bidamount"]))
+        bidobj.save()
+        bidamount = float(request.POST["bidamount"])
+        if bidamount > listing.startingBid :
+            if listing.currentBid == None or listing.currentBid < bidamount: 
+                listing.currentBid = bidamount
+                bidobj.iscurrent =True
+                listing.save()
+    return HttpResponseRedirect(reverse("listing", args = [id]))   
+
+def comment(request, id):
+    if request.method == "POST":
+        commenttext = ""+request.POST["comment"]
+        commentobj = Comment(comment= str(commenttext), listing = Listing.objects.get(pk = id), user = request.user)
+        commentobj.save()
+    return HttpResponseRedirect(reverse("listing", args = [id]))   
+
+def addtowatchlist(request, id):
+    request.user.spectators_list.add(Listing.objects.get(pk = id))
+    return HttpResponseRedirect(reverse("listing", args = [id]))
+
+def removefromwatchlist(request, id):
+    listing = Listing.objects.get(pk =id)
+    listing.spectators.remove(request.user.id)
+    return HttpResponseRedirect(reverse("listing", args = [id]))
 
 def watchlist(request):
     watchlist = request.user.spectators_list.all()
     watchlistlength = len(watchlist)
     return render(request, "auctions/watchlist.html", {
         "heading" : "Watchlist",
-        "watchlist" : watchlist,
+        "activelistings" : watchlist,
         "watchlistlength" : watchlistlength,
         "error_message":"No Active listing in your watchlist"
     })

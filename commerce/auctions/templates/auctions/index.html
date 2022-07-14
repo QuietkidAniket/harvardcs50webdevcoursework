@@ -22,6 +22,7 @@
         padding: 2px 1px;
         }
     </style>
+    
 {% endblock %}
 <body>
 {% block header %}
@@ -71,15 +72,17 @@
         <div>
         {% for listing in activelistings %}
             {% block listingtiles %}
-            {% with title=listing.title %}
-                <a href = "listing/{{ title }}">
+            {% with id=listing.id %}
+                <a href = "{% url 'listing' id%}">
                 <div class = "card">
                 <div class = "container" style = "width : 90%; padding : 5px; height : 300px; margin-top : 2%; margin : 1%; color : black; ">
                     <div>
                     <img src= "{{ listing.picture }}" style = "padding : 0px;margin-top : 5px; max-height : 300px; max-width : 300px">
                     </div>
                         <div style = "position:absolute; top : 40px; margin-top : 0px; left : 400px; width : 400px"><strong>{{ listing.title }}</strong>
-                        <br><br><br>
+                        <br>
+                        <div style = "font-size: small; color : gray">Category : {{ listing.category.category }}</div>
+                        <br><br>
                         <div style = "font-weight:500;">Price : ${{ listing.startingBid }}</div>
                         <br><br>
                         <div style="font-size:small; color:grey ">Created {{ listing.creation_date }}</div>
@@ -95,3 +98,4 @@
     {% endif %}
 {% endblock %}
 </body>
+

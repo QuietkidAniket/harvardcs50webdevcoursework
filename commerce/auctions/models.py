@@ -38,7 +38,7 @@ class Bid(m.Model):
         return f"{self.auction} : {self.user} offers {self.offer} ({self.date})"
 
 class Comment(m.Model):
-    comment = m.CharField(max_length = 200)
+    comment = m.CharField(max_length = 500)
     creationdate = m.DateTimeField(default=timezone.now)
     user = m.ForeignKey(User, on_delete=m.CASCADE, related_name ="user_comments")
     listing = m.ForeignKey(Listing, on_delete=m.CASCADE, related_name = "listing_comments")
