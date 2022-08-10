@@ -15,12 +15,10 @@
             localStorage.setItem('counter',counter);
         }
         document.addEventListener('DOMContentLoaded',function(){
-            // doubt whether this statement works .....
-            document.querySelector('h1').innerHTMl = localStorage.getItem('counter');
 
             //changes the value of h1 header to the value of counter.
             document.querySelector('#btn').onclick = count;
-            document.querySelector('#nouse').onclick = null;
+            document.querySelector('#nouse').disabled = true;
         });
        </script>
     </head>
