@@ -1,0 +1,6 @@
+TIMESTAMPS
+send mail :	
+mailbox	:
+view email : 
+archive and unarchive :
+reply : 

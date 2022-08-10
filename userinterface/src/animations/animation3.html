@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Animation 3</title>
+        <script src ="animationjs.js"></script>
+        <style>
+            @keyframes move{
+                0%{
+                    left:0%;
+                }
+                50%{
+                    left:100%;
+                }
+                100%{
+                    left:0%;
+                }
+            }
+            h1{
+                position : relative;
+                animation-name : move;
+                animation-duration : 2s;
+                animation-fill-mode : forwards;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome!</h1>
+        <button>click here</button>
+    </body>
+</html>
