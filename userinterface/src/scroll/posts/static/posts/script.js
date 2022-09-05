@@ -6,7 +6,7 @@ document.addEventListener('click', event => {
     if(element.className === 'hide'){
         element.parentElement.style.animationPlayState = 'running';
         element.parentELement.addEventListener('animationend', () => {
-            cdelement.parentElement.remove();
+            element.parentElement.remove();
         });
     }
 });

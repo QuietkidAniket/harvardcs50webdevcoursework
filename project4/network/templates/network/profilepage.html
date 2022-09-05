@@ -1,0 +1,97 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <div id="{{ username }}" style="padding-left : 10px; padding-right : 10px; padding-top : 20px; padding-bottom : 40px">
+        <h2 style="position: relative; left : 30%; margin-bottom : 30px"> {{ username }}</h2>
+        
+        {% if not is_following and not user_himself %}
+        <button class = 'btn btn-primary-light' id = "follow" style="position:relative; left:50%;background-color:rgb(94, 148, 209); color:white">Follow</button>
+        {% endif %}
+        {% if is_following and not user_himself %}
+        <button class = 'btn btn-primary-light' id = "unfollow" style="position:relative; left:50%;background-color:rgb(94, 148, 209); color:white">Unfollow</button>
+        {% endif %}
+        <div style="position :absolute ; left : 30%;"><strong>Followers</strong>
+            <div style="position :absolute ; left : 35%;">{{ nooffollowers }}</div>
+        </div> 
+        <div style="position: absolute; left : 40%"><strong>Following</strong>
+             <div style="position :absolute ; left : 45%;">{{ nooffollowing }}</div>   
+        </div>
+    </div>
+
+    <hr>
+
+    {% if user_himself %}
+    <h3 style="position: relative; left : 40%; margin-bottom : 10px">Your Posts</h3>
+    {% endif %}
+    {% if not user_himself %}
+    <h3 style="position: relative; left : 40%; margin-bottom : 10px">{{ username }}'s Posts</h3>
+    {% endif %}
+
+    <div class = "container">
+        {% for post in page_obj %}
+        
+        <div class="card" >
+            
+            <div class = "post_creator"><strong>{{ post.creator.username }}</strong>
+                {% if user_himself %}
+                <div>
+                    <a href = "{% url 'edit' post.id %}">
+                    <button class="btn btn-primary-light" style="position:absolute; left:90%; top:20px;color:white;background-color:rgb(122, 119, 168);">Edit</button>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class = "post_title">{{ post.title }}</div>
+            <div class = "post_content">{{ post.content }}</div>
+            <div class = "post_date" >{{ post.date }}</div>
+                {% with posts as post.like.all() %}
+                {% if user in posts %}
+                <div id="{{ post.id }}" class="logo_div">
+                    <img  id="liked" data-id="{{ post.id }}" class="logo" src = "https://cdn-icons-png.flaticon.com/512/1246/1246113.png?w=360">
+                    <div id="no_of_likes_{{ post.id }}">{{ post.nooflikes }}</div>
+                </div>
+                {% else %}                
+                <div  id="{{ post.id }}" class="logo_div">
+                    <img id="like" data-id="{{ post.id }}" class="logo" src = "https://static.vecteezy.com/system/resources/previews/001/505/090/original/like-icon-free-vector.jpg">
+                    <div id="no_of_likes_{{ post.id }}">{{ post.nooflikes }}</div>
+                </div>
+                {% endif %}
+                {% endwith %}
+                {% with posts as post.dislike.all()) %}
+                {% if user in posts %}
+                <div  id="{{ post.id }}" class="logo_div">
+                    <img id="disliked" data-id="{{ post.id }}" class="logo" src = "https://flyclipart.com/thumb2/youtube-dislike-transparent-png-pictures-394667.png">
+                    <div id="no_of_dislikes_{{ post.id }}">{{ post.noofdislikes }}</div>
+                </div>                
+                {% else %}                
+                <div id="{{ post.id }}" class="logo_div">
+                    <img  id="dislike" data-id="{{ post.id }}" class="logo" src = "https://static.vecteezy.com/system/resources/thumbnails/000/380/613/small/Basic_Elements__2827_29.jpg">
+                    <div id="no_of_dislikes_{{ post.id }}">{{ post.noofdislikes }}</div>
+                </div>
+                {% endif %}
+                {% endwith %}
+                
+
+            </div>
+        
+        {% endfor %}
+        
+    </div>
+    <div style="position :relative; left : 30%; padding : 20px">
+        Currently at page <strong>{{ page_number }}</strong> 
+    </div>
+    <div style="padding:20px">
+    <nav aria-label="Page navigation example" style="position:relative; left : 30%">
+        <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="?page=1"> Go to page 1 </a></li>
+        {% if page_obj.has_previous %}  
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+          
+         {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% endif %}
+        </ul>
+    </nav>
+    </div>
+{% endblock %}
