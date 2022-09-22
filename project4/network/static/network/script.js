@@ -24,6 +24,7 @@ document.addEventListener('click', event => {
         const parentelement = element.parentElement
         const username  = parentelement.id 
         fetch(`/follow/${username}`);
+        console.log('follow/unfollow request')
         window.location.reload()
 
     }

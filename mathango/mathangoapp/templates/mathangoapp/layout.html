@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+<title>{% block title %}Mathango{% endblock %}</title>
+<link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'mathangoapp/styles.css' %}" rel="stylesheet">
+    <script src = "{% static 'mathangoapp/script.js' %}" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/aa436d998a.js"></script>
+    {% block scr %}
+    {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="CS50Web Final Project">
+</head>
+<body>
+    <div id="headingmenu" style="width:fit-content" >
+        <nav class="navbar navbar-expand-md fixed-top d-flex" style="background-color:rgb(44, 57, 173);">
+            <button class="navbar-toggler btn" type="button" data-toggle="collapse" data-target="#navbarToggler">
+                <i class="fas fa-bars" style="color:#fff; font-size:28px;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <a id="brand-logo" class="navbar-brand mr-auto fancy-font" href="{% url 'index' %}">Mathango</a>
+                <form id="search-form" class="form-inline" action="{% url 'search' %}" method="get" style="position:relative;">
+                  <input id="search-query" class="form-control" type="search" name="q" placeholder="Search User by name">
+                  <button id="search-btn" class="btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                {% if request.user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'profile' user.username %}?page=1" data-toggle="tooltip" data-placement="bottom" title="Profile"><span class="d-md-none align-top mr-2">{{ user.username }}</span><i class="fas fa-user-circle"></i></a>
+                    <a class="nav-link" href="{% url 'index' %}" data-toggle="tooltip" data-placement="bottom" title="Play">Play</a>
+                    <a class="nav-link" href="{% url 'leaderboard' %}" data-toggle="tooltip" data-placement="bottom" title="Leaderboard">Leaderboard</a>
+                    <a class="nav-link" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Log out">Log out</a>
+                {% endif %}
+                {% if not request.user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'login' %}" data-toggle="tooltip" data-placement="bottom" title="Log in">Log in</i></a>
+                    <a class="nav-link" href="{% url 'register' %}" data-toggle="tooltip" data-placement="bottom" title="Register">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    <hr>
+    <main>
+    <div id="body" >
+        {% block body %}
+        {% endblock %}
+    </div>
+    </main>
+    <footer class="bg-dark fixed-bottom" >
+        <p class="text-center" style="color:#fff;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;" >
+          Made by <a href="mailto:aniketkundu12072004@gmail.com" style="color:white;"><u>Aniket Kundu</u></a> for CS50Web course
+        </p>
+      </footer>
+</body>
+
+

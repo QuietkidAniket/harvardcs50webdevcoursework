@@ -9,7 +9,7 @@ class Post(m.Model):
     creator = m.ForeignKey(User, on_delete= m.CASCADE, related_name = "posts")
     title = m.CharField(max_length=200)
     content = m.CharField(max_length=3000)
-    date = m.DateField(default = timezone.now)
+    date = m.DateTimeField(default = timezone.now)
     like = m.ManyToManyField(User, blank = True, related_name = "likes_by_user")
     dislike = m.ManyToManyField(User, blank = True, related_name = "dislikes_by_user")
     nooflikes = m.IntegerField(default = 0)

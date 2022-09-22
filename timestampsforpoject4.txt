@@ -1,0 +1,7 @@
+0:00 : All posts
+     : Pagination
+     : Like/Unlike
+     : New posts
+2:35 : Profile
+3:10 : Follow
+3:33 : Edit Post
