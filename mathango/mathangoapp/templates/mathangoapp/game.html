@@ -7,185 +7,13 @@
 <link href='https://css.gg/chevron-double-right-o.css' rel='stylesheet'>
 <link href='https://css.gg/close.css' rel='stylesheet'>
 
-
-<script>
-    
-    document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('#time').style.opacity = 0.5;
-    document.querySelector('#stop').hidden = "hidden";
-    document.querySelector('#answer').disabled = true;        
-    document.querySelector('#ans_btn').disabled = true;
-    document.querySelector("#diflev").disabled = true;
-    document.querySelector("#restart").hidden = "hidden";
-    document.querySelector("#numpad").hidden = "hidden";
-    });
-    
-    function submitq(){
-        ans = document.querySelector("#answer").value
-        
-        fetch('game' ,{method:"POST", answer: ans, })
-        .then(response => response.json())
-    }
-
-
-    function getq(){
-        
-            fetch('/game' , {method:'GET'})
-            .then(response => response.json())
-            .then(d=>{
-                document.querySelector("#dq").innerHTML = d.a + " "+ d.sign +" "+d.b +" = ?";
-            });
-                
-    }
-
-document.addEventListener('click', event =>{
-    const element = event.target;
-    if(element.className === 'btn btn-primary num'){
-        
-        if(element.id === 'delete'){
-        document.querySelector('#answer').value = (parseInt(parseInt(document.querySelector('#answer').value) / 10)).toString();}
-        else{
-            document.querySelector('#answer').value = document.querySelector('#answer').value + element.value;
-        }
-    }
-    }
-    
-);
-
-document.addEventListener('onkeypress', event => {
-    if (event.target === 'enter'){
-
-    }
-});
-
-
-    var timecounter = 0;
-    function resumetimer(){
-        document.querySelector('#answer').disabled = false;
-        document.querySelector('#ans_btn').disabled = false;
-        document.querySelector('#stop').hidden = null;
-        document.querySelector('#time').style.opacity = 1;
-        document.querySelector('#answer').focus();
-        document.querySelector('#resume').hidden= "hidden";
-        document.querySelector("#numpad").hidden = null;
-        document.querySelector("#dq").hidden = null;
-        var countDownDate = new Date( new Date().getTime() + timecounter);
-                x= setInterval(function() {
-            document.querySelector('.box').style.borderColor = "green";
-            // Get current time
-            var now = new Date().getTime();
-            
-            
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-            // Time calculations for days, hours, minutes and seconds
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            var milli = Math.floor((distance % 1000 )/10);
-            // Display the result in the element with id="demo"
-            document.querySelector("#time").innerHTML = minutes + " : " + seconds + " : "+ milli;
-
-            //if the pause button is clicked
-            document.querySelector("#stop").onclick = () => {
-            clearInterval(x);    
-            timecounter = distance;
-            document.querySelector("#resume").hidden = null;
-            document.querySelector("#stop").hidden = "hidden";
-            document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
-            document.querySelector('#answer').disabled = true;
-            document.querySelector('#ans_btn').disabled = true;
-            document.querySelector("#numpad").hidden = "hidden";
-            document.querySelector('#dq').hidden = "hidden";
-            };
-            // If the count down is finished
-            if (distance < 0) {
-                clearInterval(x);
-                document.querySelector("#time").innerHTML = "TIME UP";
-                document.querySelector("#time").style.color = "rgb(211, 71, 71)";
-                document.querySelector("#time").parentElement.style.borderStyle = "solid"; 
-                document.querySelector("#time").parentElement.style.borderColor = "rgb(211, 71, 71)";
-                document.querySelector("#stop").disabled = true;
-                document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
-                document.querySelector('#answer').disabled = true;
-                document.querySelector("#numpad").hidden = "hidden";
-            document.querySelector('#ans_btn').disabled = true;
-            document.querySelector('#dq').hidden = "hidden";
-            }
-            }, 1);
-    }
-    function starttimer(){
-        time = document.querySelector("#timevar").value;
-        time= time*1000
-        console.log(time)
-        getq();
-    document.querySelector("#message").hidden = "hidden";
-    document.querySelector('#time').style.opacity = 1;
-    document.querySelector('#stop').hidden = null;
-    document.querySelector('#start').hidden = "hidden";
-    document.querySelector('#answer').disabled = false;
-    document.querySelector('#answer').focus();                
-    document.querySelector('#ans_btn').disabled = false;
-    document.querySelector("#diflev").disabled = false;
-    document.querySelector("#numpad").hidden = "";
-    document.querySelector("#dq").hidden = "";    
-        const start = new Date();
-        var countDownDate = new Date(start.getTime() + time);
-            // Update the count down every 1 second
-            x= setInterval(function() {
-                document.querySelector('.box').style.borderColor = "green";
-            // Get current time
-            var now = new Date().getTime();
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-        
-            // Time calculations for days, hours, minutes and seconds
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            var milli = Math.floor((distance % 1000 )/10);
-            // Display the result in the element with id="demo"
-            document.querySelector("#time").innerHTML = minutes + " :: " + seconds + " :: "+ milli;
-            
-            //if the pause button is clicked
-            document.querySelector("#stop").onclick = () => {
-            clearInterval(x);  
-            timecounter = distance;  
-            document.querySelector("#resume").hidden = null;
-            document.querySelector("#stop").hidden = "hidden";
-            document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
-            document.querySelector('#answer').disabled = true;
-            document.querySelector('#ans_btn').disabled = true;
-            document.querySelector("#numpad").hidden = "hidden";
-            document.querySelector("#dq").hidden = "hidden";
-            };
-
-            // If the count down is finished
-            if (distance < 0) {
-                document.querySelector("#numpad").hidden = "hidden";
-                clearInterval(x);
-                document.querySelector("#time").innerHTML = "TIME UP";
-                document.querySelector("#time").style.color = "rgb(211, 71, 71)";
-                document.querySelector("#time").parentElement.style.borderStyle = "solid"; 
-                document.querySelector("#time").parentElement.style.borderColor = "rgb(211, 71, 71)";
-                document.querySelector("#stop").disabled = true;
-                document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
-                document.querySelector('#answer').disabled = true;
-                document.querySelector("#numpad").hidden = "hidden";
-            document.querySelector('#ans_btn').disabled = true;
-            document.querySelector('#dq').hidden = "hidden";
-            }
-            }, 1);
-            
-        }
-    
-
-</script>
 {% endblock %}
 {% block body %}
 
     <div class="box" >
     <a href="{% url 'index' %}" ><button class="btn btn-danger" title="Back to Main menu" id="exit"><i class="gg-close"></i></button></a>
     <div class="{{ diff }}" id="diflev" style="position:relative; left:10%; width:50%;padding:10px;font-weight: 500;"><strong>Game time</strong> : {{ customtime }} seconds</div>
-    <input type="hidden" id="timevar" name="timehidden" value="{{ customtime }}">
+    <input type="hidden" class="" id="timevar" name="timehidden" value="{{ customtime }}">
     <div id="message" >Click on 'Start' button to start the game</div>
     <div>
         <button id="start" class="btn btn-success" style="position:relative;left:70%" onclick="starttimer()">Start</button>       <button id="stop" class="btn btn-warning" style="position:relative;left:70%;width:70px" >Pause</button>
@@ -200,13 +28,13 @@ document.addEventListener('onkeypress', event => {
     </div>
 
     <div id="dq" >
-
+        
     </div>
 
     <div style="position:relative;margin:auto;padding:40px">
-        <input type="number" class="form-control" id="answer">
+        <input type="number" class="form-control" placeholder="Enter your answer" id="answer">
         <br>
-        <button class="btn btn-success" id="ans_btn" style="width:60px; position:relative;left: 80%" onclick = "submitq()"><i class="gg-chevron-double-right-o"></i></button> 
+        <button class="btn btn-success" id="ans_btn" onclick="submitq()" style="width:60px; position:relative;left: 80%"><i class="gg-chevron-double-right-o"></i></button> 
         <button class="btn btn-success" id="restart" style="width:60px"><i class="reload"></i>Restart</button> 
     </div>
     <div id="numpad" aria-label="Select Difficulty" >
@@ -219,7 +47,8 @@ document.addEventListener('onkeypress', event => {
         <div><button type="button" class="btn btn-primary num" value="7" title="7">7</button></div>
         <div><button type="button" class="btn btn-primary num" value="8" title="8">8</button></div>
         <div><button type="button" class="btn btn-primary num" value="9" title="9">9</button></div>
-        <div><button type="button" class="btn btn-primary num" value="0" title="0" style="position:relative;left:50px">0</button></div>
+        <div><button type="button" class="btn btn-primary num" value="-x" title="negativesign">-</button></div>
+        <div><button type="button" class="btn btn-primary num" value="0" title="0" style="position:relative;left:0px">0</button></div>
         <div><button type="button" class="btn btn-primary num" id="delete" value="-1" title="delete" style="position:relative;left:70px">del</button></div>  
       </div>
       

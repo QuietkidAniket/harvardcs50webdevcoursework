@@ -90,58 +90,64 @@ def leaderboard(request):
     pass
 
 def game(request):
-    if request.method == "GET":        
-        c = int((10**3) - 1)
-        list1 = list(range(1,c+1))
-        list2 = ['a','s', 'm', 'd']
-        a = random.choice(list1)
-        b = None
-        sign = random.choice(list2)
-        ans = None
-        if sign == 'a' or sign == 's':
-            b = random.choice(list1)
-            if sign == 'a':
-                ans = a + b
-                sign1 = '+'
-            elif sign == 's':
-                ans = a - b
-                sign1 = '-'
-        elif sign == 'm' or sign == 'd':
-            b = random.choice(list(range(1, 10)))
-            if sign == 'm':
-                ans = int(a * b)
-                sign1 = 'x'
-            elif sign == 'd':
-                if a%b != 0:
-                    a = a- (a%b) 
-                ans = int(a / b)
-                sign1 = '%'
-                    
-                    
+    if request.method == "GET":
+        print("HEHE")
+        #print(request.GET.get('state'))
+        if request.GET.get('state') == 'get':       
         
-                
+            c = int((10**3) - 1)
+            list1 = list(range(1,c+1))
+            list2 = ['a','s', 'm', 'd']
+            a = random.choice(list1)
+            b = None
+            sign = random.choice(list2)
+            ans = None
+            if sign == 'a' or sign == 's':
+                b = random.choice(list1)
+                if sign == 'a':
+                    ans = a + b
+                    sign1 = '+'
+                elif sign == 's':
+                    ans = a - b
+                    sign1 = '-'
+            elif sign == 'm' or sign == 'd':
+                b = random.choice(list(range(1, 10)))
+                if sign == 'm':
+                    ans = int(a * b)
+                    sign1 = 'x'
+                elif sign == 'd':
+                    if a%b != 0:
+                        a = a- (a%b) 
+                    ans = int(a / b)
+                    sign1 = '%'
 
-        return JsonResponse({
-            "a" : a,
-            "b" : b,
-            "sign" : sign1,
-            "ans" : ans
-        })
+            return JsonResponse({
+                "a" : a,
+                "b" : b,
+                "sign" : sign1,
+                "ans" : ans
+            })
+                    
+                    
+        elif request.GET.get('state') == 'put':    
+            answer = int(request.GET.get('answer'))
+            ans = int(request.GET.get('correctans'))
+            try:
+                if answer == ans:
+                    message = "Correct"
+                else : 
+                    message = "Incorrect"
+                return JsonResponse({
+                    "state" : message
+                })
+            except: 
+                return JsonResponse({
+                    "state": "incorrect response"
+                })
 
-    elif request.method == "POST":
-        answer = bool(request.POST['answer'])
-        try:
-            if int(answer) == int(ans):
-                message = "Correct"
-            else : 
-                message = "Incorrect"
-            return JsonResponse({
-                "state" : message
-            })
-        except: 
-            return JsonResponse({
-                "state": "incorrect response"
-            })
+            
+    
+        
     else:
         return HttpResponse("Invalid Request", 404)
 
