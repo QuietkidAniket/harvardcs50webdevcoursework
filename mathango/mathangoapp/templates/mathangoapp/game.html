@@ -41,9 +41,21 @@
 document.addEventListener('click', event =>{
     const element = event.target;
     if(element.className === 'btn btn-primary num'){
-        document.querySelector('#answer').value = document.querySelector('#answer').value + element.value;
+        
+        if(element.id === 'delete'){
+        document.querySelector('#answer').value = (parseInt(parseInt(document.querySelector('#answer').value) / 10)).toString();}
+        else{
+            document.querySelector('#answer').value = document.querySelector('#answer').value + element.value;
+        }
+    }
     }
     
+);
+
+document.addEventListener('onkeypress', event => {
+    if (event.target === 'enter'){
+
+    }
 });
 
 
@@ -208,7 +220,7 @@ document.addEventListener('click', event =>{
         <div><button type="button" class="btn btn-primary num" value="8" title="8">8</button></div>
         <div><button type="button" class="btn btn-primary num" value="9" title="9">9</button></div>
         <div><button type="button" class="btn btn-primary num" value="0" title="0" style="position:relative;left:50px">0</button></div>
-        <div><button type="button" class="btn btn-primary num" value="-1" title="delete" style="position:relative;left:70px">del</button></div>  
+        <div><button type="button" class="btn btn-primary num" id="delete" value="-1" title="delete" style="position:relative;left:70px">del</button></div>  
       </div>
       
 </div>

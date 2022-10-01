@@ -130,6 +130,11 @@ color : rgb(59, 59, 153)
   }
 
 
+#answer{
+  position:relative;
+  width:30%;
+  left:25%;
+}
 #difficulty{
   position:relative;
   left:30%;
@@ -179,7 +184,7 @@ color : rgb(59, 59, 153)
     height:60px;
   }
   #dq{
-    border-style:solid; border-width:0.5px; border-radius: 5px; border-color: rgb(148, 148, 148);position:relative;top:auto;left:30%;font-size:45px;width:fit-content;
+    border-style:solid; border-width:0.5px; border-radius: 5px; border-color: rgb(148, 148, 148);position:relative;top:auto;top:2px;left:30%;font-size:45px;width:fit-content;
   }
   @media(max-width:700px){
    #message{
