@@ -4,20 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, UserStats, Game, Follow, Post
+from .models import User, UserStats, Game, Follow, Message
+import random
 
-time = {
-    1 : 120,
-    2 : 105,
-    3 : 100,
-    4 : 95,
-    5 : 90,
-    6 : 90,
-    7 : 90,
-    8 : 85,
-    9 : 80,
-    10 : 60
- }
 # Create your views here.
 
 def index(request):
@@ -79,16 +68,14 @@ def index(request):
 def creategame(request):
     if request.method == 'GET':
         
-        digits = int(request.GET.get('digits'))
-        dif = int(request.GET.get('difficulty'))
+        time = int(request.GET.get('time'))
         gameid = 0
         #creating a new game
         #obj = Game(player = request.user, questions = question[dif])
         #obj.save()
         #gameid = obj.id
         return render(request, "mathangoapp/game.html", {
-            "digits" : digits,
-            "diff" : dif,
+            "customtime" : time,
             "gameid" : gameid
         })
 
@@ -98,44 +85,67 @@ def creategame(request):
 def search(request):
     username= request.POST["search-query"]
     profile(request, username)
+
 def leaderboard(request):
     pass
+
 def game(request):
-    if request.method == "GET":
-        dif = request.GET.get('dif')
-        dig = request.GET.get('dig')
-        c = int((10**dig) - 1)
+    if request.method == "GET":        
+        c = int((10**3) - 1)
         list1 = list(range(1,c+1))
         list2 = ['a','s', 'm', 'd']
         a = random.choice(list1)
+        b = None
         sign = random.choice(list2)
         ans = None
         if sign == 'a' or sign == 's':
             b = random.choice(list1)
+            if sign == 'a':
+                ans = a + b
+                sign1 = '+'
+            elif sign == 's':
+                ans = a - b
+                sign1 = '-'
         elif sign == 'm' or sign == 'd':
             b = random.choice(list(range(1, 10)))
-        if sign == 'a':
-            ans = a + b
-        elif sign == 's':
-            ans = a - b
-        elif sign == 'm':
-            ans = a * b
-        elif sign == 'd':
-            ans == a / b
+            if sign == 'm':
+                ans = int(a * b)
+                sign1 = 'x'
+            elif sign == 'd':
+                if a%b != 0:
+                    a = a- (a%b) 
+                ans = int(a / b)
+                sign1 = '%'
+                    
+                    
+        
+                
 
         return JsonResponse({
             "a" : a,
             "b" : b,
-            "sign" : sign,
+            "sign" : sign1,
             "ans" : ans
         })
+
     elif request.method == "POST":
-        correct = bool(request.POST['state'])
-        print(correct)
-        #
-        return HttpResponseRedirect('stat.html')
+        answer = bool(request.POST['answer'])
+        try:
+            if int(answer) == int(ans):
+                message = "Correct"
+            else : 
+                message = "Incorrect"
+            return JsonResponse({
+                "state" : message
+            })
+        except: 
+            return JsonResponse({
+                "state": "incorrect response"
+            })
     else:
         return HttpResponse("Invalid Request", 404)
+
+
 def follow(request, username):
     pass
 def following(request):

@@ -1,6 +1,13 @@
-
 {% extends 'mathangoapp/layout.html' %}
 {% block scr %}
+<style>
+    
+</style>
+<link href='https://css.gg/alarm.css' rel='stylesheet'>
+<link href='https://css.gg/chevron-double-right-o.css' rel='stylesheet'>
+<link href='https://css.gg/close.css' rel='stylesheet'>
+
+
 <script>
     
     document.addEventListener('DOMContentLoaded', () => {
@@ -9,27 +16,50 @@
     document.querySelector('#answer').disabled = true;        
     document.querySelector('#ans_btn').disabled = true;
     document.querySelector("#diflev").disabled = true;
-    document.querySelector("#digit").disabled = true;
+    document.querySelector("#restart").hidden = "hidden";
+    document.querySelector("#numpad").hidden = "hidden";
     });
     
-    function startgame(){
-        starttimer();
-        for(i; i < noofq; i++){
-
-        }
+    function submitq(){
+        ans = document.querySelector("#answer").value
+        
+        fetch('game' ,{method:"POST", answer: ans, })
+        .then(response => response.json())
     }
+
+
+    function getq(){
+        
+            fetch('/game' , {method:'GET'})
+            .then(response => response.json())
+            .then(d=>{
+                document.querySelector("#dq").innerHTML = d.a + " "+ d.sign +" "+d.b +" = ?";
+            });
+                
+    }
+
+document.addEventListener('click', event =>{
+    const element = event.target;
+    if(element.className === 'btn btn-primary num'){
+        document.querySelector('#answer').value = document.querySelector('#answer').value + element.value;
+    }
+    
+});
+
+
     var timecounter = 0;
     function resumetimer(){
-        console.log(timecounter);
         document.querySelector('#answer').disabled = false;
-            document.querySelector('#ans_btn').disabled = false;
+        document.querySelector('#ans_btn').disabled = false;
         document.querySelector('#stop').hidden = null;
         document.querySelector('#time').style.opacity = 1;
         document.querySelector('#answer').focus();
         document.querySelector('#resume').hidden= "hidden";
+        document.querySelector("#numpad").hidden = null;
+        document.querySelector("#dq").hidden = null;
         var countDownDate = new Date( new Date().getTime() + timecounter);
                 x= setInterval(function() {
-            document.querySelector('.flexbox').style.borderColor = "green";
+            document.querySelector('.box').style.borderColor = "green";
             // Get current time
             var now = new Date().getTime();
             
@@ -42,16 +72,20 @@
             var milli = Math.floor((distance % 1000 )/10);
             // Display the result in the element with id="demo"
             document.querySelector("#time").innerHTML = minutes + " : " + seconds + " : "+ milli;
+
+            //if the pause button is clicked
             document.querySelector("#stop").onclick = () => {
             clearInterval(x);    
             timecounter = distance;
             document.querySelector("#resume").hidden = null;
             document.querySelector("#stop").hidden = "hidden";
-            document.querySelector('.flexbox').style.borderColor = "rgb(69, 114, 211)";
+            document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
             document.querySelector('#answer').disabled = true;
             document.querySelector('#ans_btn').disabled = true;
+            document.querySelector("#numpad").hidden = "hidden";
+            document.querySelector('#dq').hidden = "hidden";
             };
-            // If the count down is finished, write some text
+            // If the count down is finished
             if (distance < 0) {
                 clearInterval(x);
                 document.querySelector("#time").innerHTML = "TIME UP";
@@ -59,13 +93,19 @@
                 document.querySelector("#time").parentElement.style.borderStyle = "solid"; 
                 document.querySelector("#time").parentElement.style.borderColor = "rgb(211, 71, 71)";
                 document.querySelector("#stop").disabled = true;
-                document.querySelector('.flexbox').style.borderColor = "rgb(69, 114, 211)";
+                document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
                 document.querySelector('#answer').disabled = true;
+                document.querySelector("#numpad").hidden = "hidden";
             document.querySelector('#ans_btn').disabled = true;
+            document.querySelector('#dq').hidden = "hidden";
             }
             }, 1);
     }
     function starttimer(){
+        time = document.querySelector("#timevar").value;
+        time= time*1000
+        console.log(time)
+        getq();
     document.querySelector("#message").hidden = "hidden";
     document.querySelector('#time').style.opacity = 1;
     document.querySelector('#stop').hidden = null;
@@ -74,16 +114,13 @@
     document.querySelector('#answer').focus();                
     document.querySelector('#ans_btn').disabled = false;
     document.querySelector("#diflev").disabled = false;
-    document.querySelector("#digit").disabled = false;
-        console.log('hehe working')
-        
+    document.querySelector("#numpad").hidden = "";
+    document.querySelector("#dq").hidden = "";    
         const start = new Date();
-        var countDownDate = new Date(start.getTime() + 10000);
-        console.log(start)
-        console.log(countDownDate)
+        var countDownDate = new Date(start.getTime() + time);
             // Update the count down every 1 second
             x= setInterval(function() {
-                document.querySelector('.flexbox').style.borderColor = "green";
+                document.querySelector('.box').style.borderColor = "green";
             // Get current time
             var now = new Date().getTime();
             // Find the distance between now and the count down date
@@ -95,56 +132,86 @@
             var milli = Math.floor((distance % 1000 )/10);
             // Display the result in the element with id="demo"
             document.querySelector("#time").innerHTML = minutes + " :: " + seconds + " :: "+ milli;
+            
+            //if the pause button is clicked
             document.querySelector("#stop").onclick = () => {
             clearInterval(x);  
             timecounter = distance;  
             document.querySelector("#resume").hidden = null;
             document.querySelector("#stop").hidden = "hidden";
-            document.querySelector('.flexbox').style.borderColor = "rgb(69, 114, 211)";
+            document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
             document.querySelector('#answer').disabled = true;
             document.querySelector('#ans_btn').disabled = true;
+            document.querySelector("#numpad").hidden = "hidden";
+            document.querySelector("#dq").hidden = "hidden";
             };
-            // If the count down is finished, write some text
+
+            // If the count down is finished
             if (distance < 0) {
+                document.querySelector("#numpad").hidden = "hidden";
                 clearInterval(x);
                 document.querySelector("#time").innerHTML = "TIME UP";
                 document.querySelector("#time").style.color = "rgb(211, 71, 71)";
                 document.querySelector("#time").parentElement.style.borderStyle = "solid"; 
                 document.querySelector("#time").parentElement.style.borderColor = "rgb(211, 71, 71)";
                 document.querySelector("#stop").disabled = true;
-                document.querySelector('.flexbox').style.borderColor = "rgb(69, 114, 211)";
+                document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
+                document.querySelector('#answer').disabled = true;
+                document.querySelector("#numpad").hidden = "hidden";
+            document.querySelector('#ans_btn').disabled = true;
+            document.querySelector('#dq').hidden = "hidden";
             }
             }, 1);
             
         }
+    
+
 </script>
 {% endblock %}
 {% block body %}
 
-<div class="flexbox" style="position:relative;left:20%;width:100%; border-color:rgb(69, 114, 211); border-style: solid; border-radius: 25px;">
-    <button class="btn btn-danger" style="background-color: rgb(202, 51, 51); position:relative;left:80%;width:100px;top:10px;height:60px;border-radius:30px;">Back to Main menu</button>
-    <div class="{{ diff }}" id="diflev" style="position:relative; left:10%; width:600px;padding:10px;font-weight: 500;">Difficulty Level {{ diff }}</div>
-    <div class="{{ digits }}" id="digit" style="position:relative; left:10%; width:600px;padding:10px; font-weight: 500;">{{ digits }} digit game</div>
-    <div id="message" style="position:relative;left:30%;padding:10px;font-weight: 600;">Click on 'Start' button to start the game</div>
+    <div class="box" >
+    <a href="{% url 'index' %}" ><button class="btn btn-danger" title="Back to Main menu" id="exit"><i class="gg-close"></i></button></a>
+    <div class="{{ diff }}" id="diflev" style="position:relative; left:10%; width:50%;padding:10px;font-weight: 500;"><strong>Game time</strong> : {{ customtime }} seconds</div>
+    <input type="hidden" id="timevar" name="timehidden" value="{{ customtime }}">
+    <div id="message" >Click on 'Start' button to start the game</div>
     <div>
-        <button id="start" class="btn btn-success" style="position:relative;left:70%" onclick="starttimer()">Start</button>
-        <button id="stop" class="btn btn-warning" style="position:relative;left:70%;width:70px" >Pause</button>
+        <button id="start" class="btn btn-success" style="position:relative;left:70%" onclick="starttimer()">Start</button>       <button id="stop" class="btn btn-warning" style="position:relative;left:70%;width:70px" >Pause</button>
         <button id="resume" class="btn btn-success" style="position:relative;left:70%;width:80px" hidden="hidden" onclick="resumetimer()">Resume</button>
-        <div style="position:relative;left:70%;padding:20px;top:10px; background-color: rgb(208, 225, 228);width:fit-content;border-radius: 30px;border-right-color: blue;">
-            <i class="gg-alarm"></i> <div id="time" style="position:relative;font-size: larger;">0 :: 00 :: 00</div>
+        <div id="timebox" >
+            <i class="gg-alarm"></i> <div id="time" >min :: s :: ms</div>
         </div>
 
-        <script>
 
-            </script>
+            
 
     </div>
-    <div id="dq" style="position:relative;top:auto">
+
+    <div id="dq" >
+
     </div>
+
     <div style="position:relative;margin:auto;padding:40px">
-        <input class="form-control" id="answer">
-        <button class="btn btn-success" id="ans_btn" style="width:60px" onclick = "submitq">Next</button> 
+        <input type="number" class="form-control" id="answer">
+        <br>
+        <button class="btn btn-success" id="ans_btn" style="width:60px; position:relative;left: 80%" onclick = "submitq()"><i class="gg-chevron-double-right-o"></i></button> 
+        <button class="btn btn-success" id="restart" style="width:60px"><i class="reload"></i>Restart</button> 
     </div>
+    <div id="numpad" aria-label="Select Difficulty" >
+        <div><button type="button" class="btn btn-primary num" value="1" title="1">1</button></div>
+        <div><button type="button" class="btn btn-primary num" value="2" title="2">2</button></div>
+        <div><button type="button" class="btn btn-primary num" value="3" title="3">3</button></div>
+        <div><button type="button" class="btn btn-primary num" value="4" title="4">4</button></div>
+        <div><button type="button" class="btn btn-primary num" value="5" title="5">5</button></div>
+        <div><button type="button" class="btn btn-primary num" value="6" title="6">6</button></div>
+        <div><button type="button" class="btn btn-primary num" value="7" title="7">7</button></div>
+        <div><button type="button" class="btn btn-primary num" value="8" title="8">8</button></div>
+        <div><button type="button" class="btn btn-primary num" value="9" title="9">9</button></div>
+        <div><button type="button" class="btn btn-primary num" value="0" title="0" style="position:relative;left:50px">0</button></div>
+        <div><button type="button" class="btn btn-primary num" value="-1" title="delete" style="position:relative;left:70px">del</button></div>  
+      </div>
+      
 </div>
+
 
 {% endblock %}
