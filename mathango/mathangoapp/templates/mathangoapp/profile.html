@@ -3,7 +3,12 @@
 <script>
     function follow(){
         element = document.querySelector('#follow');
+
+        if(element == null){
+            element = document.querySelector('#unfollow');            
+        }
         const parentelement = element.parentElement;
+
         const username  = parentelement.id ;
         fetch(`/follow/${username}`);
         console.log('follow/unfollow request');
@@ -20,17 +25,19 @@
 <div id="avgresponsetime" style="padding:8px;width:fit-content;border-radius:5px;position:relative;left:40%;top:30px;font-size:larger;background-color: rgb(78, 78, 179);color:white">Average Response Time : {{ avgresponsetime }} seconds</div>
 <div id="nofoffollowers" style="padding:8px;position:relative;left:10%;width:fit-content;border-radius:5px;background-color: rgb(78, 78, 179);color:white">Followers : {{ nooffollowers }}</div>
 <div id="nofoffollowing" style="padding:8px;position:relative;left:10%;top:10px;width:fit-content;border-radius:5px; background-color: rgb(78, 78, 179);color:white">Following : {{ nooffollowing }}</div>
-{% if user_himself %}
+{% if not user_himself %}
 {% if not is_following %}  
 <div id="{{ username }}">
-    <button class="btn btn-primary" id="follow" onclick="follow()">Follow</button>
-</div>
-{% else %}
-<div id="{{ username }}">
-    <button class="btn btn-primary" id="unfollow" onclick="follow()">Unfollow</button>
+    <button class="btn btn-primary" id="follow" onclick="follow()" style="position:relative;left:70%">Follow</button>
 </div>
 {% endif %}
-{% else %}
+{% if is_following %}
+<div id="{{ username }}">
+    <button class="btn btn-primary" id="unfollow" onclick="follow()" style="position:relative;left:70%">Unfollow</button>
+</div>
+{% endif %}
+{% endif %}
+{% if user_himself %}
 <div style="position:relative;left:50%;top:30px;width:fit-content;">
     <form action="" method="post">
         {% csrf_token %}
