@@ -4,63 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .models import User, UserStats, Game, Follow, Message
 import random
 
 # Create your views here.
 
 def index(request):
-    user = request.user 
-    
-    if user.is_authenticated :
-        userstatobj = None
-        games = None
-        try:
-            userstatobj = UserStats.objects.get(user = user)
-            games = user.games.all()
-            if games != None:
-                avg_response_time = 0.0
-                total_wrong = 0
-                total_right = 0
-                rw = 0.0
-                counter = 0.0
-                for game in games:
-                    counter += game.avg_response_time
-                    if game.right : 
-                        total_right += 1
-                    else:
-                        total_wrong += 1
-                avg_response_time = float(counter/ len(games))
-                rw = float(total_right/total_wrong)
-                userstatobj.user=user
-                userstatobj.avg_response_time = avg_response_time, 
-                userstatobj.rw = rw 
-                userstatobj.total_right = total_right  
-                userstatobj.total_wrong = total_wrong 
-                userstatobj.save()
-            
-        except:
-            if games == None:   
-                userstatobj = UserStats(user=user, avg_response_time = 0.0, rw = 0.0, total_right = 0, total_wrong =0) 
-                userstatobj.save()
-            else:
-                avg_response_time = 0.0
-                total_wrong = 0
-                total_right = 0
-                rw = 0.0
-                counter = 0.0
-                for game in games:
-                    counter += game.avg_response_time
-                    if game.right : 
-                        total_right += 1
-                    else:
-                        total_wrong += 1
-                avg_response_time = float(counter/ len(games))
-                rw = float(total_right/total_wrong)
-                userstatobj = UserStats(user=user, avg_response_time = avg_response_time, rw = rw, total_right = total_right, total_wrong = total_wrong) 
-                userstatobj.save()
-        finally:
-            return render(request, "mathangoapp/index.html")
+    if request.user.is_authenticated:
+        reload(request)
+        return render(request, "mathangoapp/index.html")
     else:
         return HttpResponseRedirect("login")
 
@@ -69,14 +22,10 @@ def creategame(request):
     if request.method == 'GET':
         
         time = int(request.GET.get('time'))
-        gameid = 0
-        #creating a new game
-        #obj = Game(player = request.user, questions = question[dif])
-        #obj.save()
-        #gameid = obj.id
+        
         return render(request, "mathangoapp/game.html", {
             "customtime" : time,
-            "gameid" : gameid
+            
         })
 
     else:
@@ -87,12 +36,13 @@ def search(request):
     profile(request, username)
 
 def leaderboard(request):
+    reload(request)
     pass
 
 def game(request):
     if request.method == "GET":
-        print("HEHE")
-        #print(request.GET.get('state'))
+        
+        
         if request.GET.get('state') == 'get':       
         
             c = int((10**3) - 1)
@@ -142,30 +92,139 @@ def game(request):
                 })
             except: 
                 return JsonResponse({
-                    "state": "incorrect response"
-                })
-
-            
-    
-        
+                    "state": "Incorrect"
+                })       
     else:
         return HttpResponse("Invalid Request", 404)
 
+def reload(request):
+    user = request.user 
+    if user.is_authenticated :
+        userstatobj = None
+        games = None
+        try:
+            #exception
+            userstatobj = UserStats.objects.get(user = user)
+        except: 
+            userstatobj = UserStats(user=user, avg_response_time=0.0 , total_right=0)
+        #exception
+        try:
+            games = list(user.games_played.all())
+        except:
+            games = []
+        if len(games) !=0 :
+            avg_response_time = 0.0
+            total_wrong = 0
+            total_right = 0
+            rw = 0.0
+            counter = 0.0
+            for game in games:
+                counter = counter+ float(game.avgresponsetime)
+                total_right = total_right + game.right
+            avg_response_time = float(counter/ len(games))
+            print(avg_response_time)
+            userstatobj.user=user
+            userstatobj.avg_response_time = float(avg_response_time) 
+            userstatobj.total_right = total_right  
+            userstatobj.save()
+            
+        
+        else:   
+            userstatobj = UserStats(user=user, avg_response_time = 0.0 , total_right = 0) 
+            userstatobj.save()
+    
+
+def endgame(request, noofquestions, time):
+    #creating a new game
+    obj = Game(player = request.user, right = noofquestions, totalresponsetime=time, avgresponsetime= float(time/noofquestions))
+    obj.save()
+    reload(request)
+    
 
 def follow(request, username):
-    pass
-def following(request):
-    pass
+    user =  User.objects.get(username = username)
+    try:
+        obj = Follow.objects.get(user = request.user, following = user)
+        obj.delete()
+    except:
+        follow_obj = Follow(user = request.user, following = user)
+        follow_obj.save() 
+        return HttpResponseRedirect(reverse(f"/profiles/{username}?page=1"))
+
+
 def profile(request,username):
     page_number = request.GET.get('page')
-    user_obj = User.objects.get(username = username)
-    user_stats = UserStats.objects.get(user = user_obj)
-    return render(request, 'mathango/profile.html',{
-        "user_obj" : user_obj,
-        "user_stats" : user_stats
+    user = User.objects.get(username = username)
+    user_stats = UserStats.objects.get(user = user)
+    username = user.username
+    avgresponsetime = user_stats.avg_response_time
+    totalright = user_stats.total_right
+    user_himself = False
+    is_following = False
+
+    #if the requesting user is the user himself
+    if user == request.user :
+        user_himself = True   
+    else : 
+        try :
+            obj = Follow.objects.get(user = request.user, following = user)
+            is_following = True
+        except: 
+            is_following = False
+
+    following_users = list()
+    objs = list()
+    temp_objs = list()
+    all_objs = list(reversed(Message.objects.all()))
+
+    
+        
+        
+    try:
+        for following in Follow.objects.filter(user = request.user).all():
+            following_users.append(following.following)
+        print(following_users)
+        for user in following_users:
+            temp_objs.extend(user.posts.all())
+        for obj in all_objs:
+            if obj in temp_objs:
+                objs.append(obj)
+
+    except: 
+        print("no such objects")
+
+    """sending pages"""
+    p =  Paginator(objs, 10) 
+    #by default 1st page is sent
+    page_obj = p.page(1)
+    page_number =  1
+    #if a get request asks for a page, that page is stored in page_obj
+    if request.method == "GET":
+                    
+            page_number = request.GET.get('page')
+            page_obj = p.page(page_number)
+    # sending the number of followers and following
+    nooffollowers = len(list(user.followers_list.all()))
+    nooffollowing = len(list(user.following_list.all()))
+    return render(request, 'mathangoapp/profile.html',{
+        "username":username,
+        "user_himself":user_himself,
+        "totalright":totalright,
+        "is_following" : is_following,
+        "avgresponsetime":avgresponsetime,
+        "is_following" : is_following,
+        "nooffollowers":nooffollowers,
+        "nooffollowing":nooffollowing,
+        "page_obj":page_obj,
+        "page_number":page_number
     })
-def inbox(request, username):
-    pass
+
+
+def inbox(request):
+    content = request.POST['content']
+    obj = Message(creator=request.user, content=content)
+    obj.save()
+    
 def login_view(request):
     if request.method == "POST":
         # Attempt to sign user in

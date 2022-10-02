@@ -3,6 +3,7 @@
 <style>
     
 </style>
+<script src = "{% static 'mathangoapp/script.js' %}" ></script>
 <link href='https://css.gg/alarm.css' rel='stylesheet'>
 <link href='https://css.gg/chevron-double-right-o.css' rel='stylesheet'>
 <link href='https://css.gg/close.css' rel='stylesheet'>
@@ -13,6 +14,7 @@
     <div class="box" >
     <a href="{% url 'index' %}" ><button class="btn btn-danger" title="Back to Main menu" id="exit"><i class="gg-close"></i></button></a>
     <div class="{{ diff }}" id="diflev" style="position:relative; left:10%; width:50%;padding:10px;font-weight: 500;"><strong>Game time</strong> : {{ customtime }} seconds</div>
+    
     <input type="hidden" class="" id="timevar" name="timehidden" value="{{ customtime }}">
     <div id="message" >Click on 'Start' button to start the game</div>
     <div>
@@ -35,7 +37,7 @@
         <input type="number" class="form-control" placeholder="Enter your answer" id="answer">
         <br>
         <button class="btn btn-success" id="ans_btn" onclick="submitq()" style="width:60px; position:relative;left: 80%"><i class="gg-chevron-double-right-o"></i></button> 
-        <button class="btn btn-success" id="restart" style="width:60px"><i class="reload"></i>Restart</button> 
+        <button class="btn btn-success" id="restart" style="width:90px"><i class="reload"></i>Play Again</button> 
     </div>
     <div id="numpad" aria-label="Select Difficulty" >
         <div><button type="button" class="btn btn-primary num" value="1" title="1">1</button></div>

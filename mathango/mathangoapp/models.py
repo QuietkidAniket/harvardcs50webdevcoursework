@@ -9,19 +9,15 @@ class User(AbstractUser):
 
 class UserStats(m.Model):
     user = m.ForeignKey(User, on_delete=m.CASCADE, related_name="stats")
-    avg_response_time = m.FloatField(default=0)
+    avg_response_time = m.FloatField(default=0.0)
     total_right = m.IntegerField(default=0)
-    total_wrong = m.IntegerField(default=0)
-    rw = m.IntegerField(default=0)
+    
 
 class Game(m.Model):
     player = m.ForeignKey(User, on_delete=m.CASCADE, related_name="games_played")
     right = m.IntegerField(default=0)
-    wrong = m.IntegerField(default=0)
-    difficulty = m.IntegerField(default=1)
-    digit = m.IntegerField(default=1)
-    total_response_time= m.FloatField(default=0.0)    
-    avg_response_time= m.FloatField(default=0.0)
+    totalresponsetime = m.FloatField(default=0.0)    
+    avgresponsetime = m.FloatField(default=0.0)
 
 class Follow(m.Model):
     user = m.ForeignKey(User, on_delete = m.CASCADE, related_name="following_list")

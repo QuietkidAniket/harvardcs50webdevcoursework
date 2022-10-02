@@ -1,4 +1,4 @@
-
+var right = 0;
     
     document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#time').style.opacity = 0.5;
@@ -24,9 +24,11 @@
             document.querySelector('.box').style.borderColor = "red";
         
             }else if(s.localeCompare('Correct') == 0){
+                right++;
                 document.querySelector('#answer').value = "";
                 document.querySelector('.box').style.borderColor = "green";
                 getq();
+                console.log(right);
             }
     
         });
@@ -55,11 +57,14 @@ document.addEventListener('click', event =>{
         else if(element.title === "negativesign"){
             document.querySelector('#answer').value = (parseInt(parseInt(parseInt(document.querySelector('#answer').value) * (-1)))).toString();
         }
+        
         else {
             document.querySelector('#answer').value = document.querySelector('#answer').value + element.value;
         }
     }
-    
+    if(element.id == "restart"){
+        window.location.reload();
+    }
     
     }
     
@@ -74,6 +79,12 @@ document.addEventListener('keypress', event => {
         submitq();
     }
 });
+
+
+function confirmend(){
+    fetch('/endgame/'+right +"/"+document.querySelector('#timevar').value);
+    document.querySelector("#restart").hidden = null;
+}
 
 
     var timecounter = 0;
@@ -128,9 +139,12 @@ document.addEventListener('keypress', event => {
                 document.querySelector("#numpad").hidden = "hidden";
             document.querySelector('#ans_btn').disabled = true;
             document.querySelector('#dq').hidden = "hidden";
+            confirmend();
             }
             }, 1);
     }
+
+
     function starttimer(){
         time = document.querySelector("#timevar").value;
         time= time*1000
@@ -191,6 +205,7 @@ document.addEventListener('keypress', event => {
                 document.querySelector("#numpad").hidden = "hidden";
             document.querySelector('#ans_btn').disabled = true;
             document.querySelector('#dq').hidden = "hidden";
+            confirmend();
             }
             }, 1);
             

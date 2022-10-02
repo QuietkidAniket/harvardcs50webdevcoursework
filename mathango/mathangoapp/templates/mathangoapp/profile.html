@@ -1,1 +1,76 @@
 {% extends 'mathangoapp/layout.html' %}
+{% block scr %}
+<script>
+    function follow(){
+        element = document.querySelector('#follow');
+        const parentelement = element.parentElement;
+        const username  = parentelement.id ;
+        fetch(`/follow/${username}`);
+        console.log('follow/unfollow request');
+        window.location.reload();
+
+    }
+</script>
+{% endblock %}
+{% block body %}
+<div id="username" style="font-size:50px;position:relative;left:35%;">
+{{ username }}
+</div>
+<div id="totalright" style="padding:8px;border-radius:5px;width:fit-content;position:relative;left:10%;top:30px;font-size: larger;background-color: rgb(78, 78, 179);color:white"> Total number of right answers : {{ totalright }}</div>
+<div id="avgresponsetime" style="padding:8px;width:fit-content;border-radius:5px;position:relative;left:40%;top:30px;font-size:larger;background-color: rgb(78, 78, 179);color:white">Average Response Time : {{ avgresponsetime }} seconds</div>
+<div id="nofoffollowers" style="padding:8px;position:relative;left:10%;width:fit-content;border-radius:5px;background-color: rgb(78, 78, 179);color:white">Followers : {{ nooffollowers }}</div>
+<div id="nofoffollowing" style="padding:8px;position:relative;left:10%;top:10px;width:fit-content;border-radius:5px; background-color: rgb(78, 78, 179);color:white">Following : {{ nooffollowing }}</div>
+{% if user_himself %}
+{% if not is_following %}  
+<div id="{{ username }}">
+    <button class="btn btn-primary" id="follow" onclick="follow()">Follow</button>
+</div>
+{% else %}
+<div id="{{ username }}">
+    <button class="btn btn-primary" id="unfollow" onclick="follow()">Unfollow</button>
+</div>
+{% endif %}
+{% else %}
+<div style="position:relative;left:50%;top:30px;width:fit-content;">
+    <form action="" method="post">
+        {% csrf_token %}
+        <span>Post your message</span>
+        <textarea class="form-control" placeholder="Your Message" name="content" style="width:fit-content"></textarea>
+        <input type="submit" class="form-control" value="Post" style="width:fit-content;background-color:rgba(38, 135, 148, 0.541);color:white">
+    </form>
+</div>
+{% endif %}
+<br>
+<br>
+<hr>
+<div id="inbox" class="container">
+    
+    {% for message in page_obj %}
+    <div id="message.id" class="card">
+    <div>
+    {{ message.creator }}
+    </div>
+    <div>{{ message.date }}</div>
+    <div>{{ message.content }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="position :relative; left : 30%; padding : 20px">
+    Currently at page <strong>{{ page_number }}</strong> 
+</div>
+<div style="padding:20px">
+<nav aria-label="Page navigation example" style="position:relative; left : 30%">
+    <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?page=1"> Go to page 1 </a></li>
+    {% if .has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    {% endif %}
+      
+     {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+      {% endif %}
+    </ul>
+</nav>
+</div>
+{% endblock %}
