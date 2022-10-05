@@ -176,7 +176,9 @@ def profile(request,username):
     objs = list()
     temp_objs = list()
     all_objs = list(reversed(Message.objects.all()))
-
+    nooffollowers = len(list(user.followers_list.all()))
+    nooffollowing = len(list(user.following_list.all()))
+    #print(page_obj)
     
         
         
@@ -185,6 +187,8 @@ def profile(request,username):
             following_users.append(following.following)
         print(following_users)
         for user in following_users:
+            print(user)
+            print(Message.objects.filter(creator = user).all())
             temp_objs.extend(user.posts.all())
         for obj in all_objs:
             if obj in temp_objs:
@@ -192,38 +196,37 @@ def profile(request,username):
 
     except: 
         print("no such objects")
-
-    """sending pages"""
-    p =  Paginator(objs, 10) 
-    #by default 1st page is sent
-    page_obj = p.page(1)
-    page_number =  1
-    #if a get request asks for a page, that page is stored in page_obj
-    if request.method == "GET":
-                    
-            page_number = request.GET.get('page')
-            page_obj = p.page(page_number)
-    # sending the number of followers and following
-    nooffollowers = len(list(user.followers_list.all()))
-    nooffollowing = len(list(user.following_list.all()))
-    return render(request, 'mathangoapp/profile.html',{
-        "username":username,
-        "user_himself":user_himself,
-        "totalright":totalright,
-        "is_following" : is_following,
-        "avgresponsetime":avgresponsetime,
-        "is_following" : is_following,
-        "nooffollowers":nooffollowers,
-        "nooffollowing":nooffollowing,
-        "page_obj":page_obj,
-        "page_number":page_number
-    })
+    finally:    
+        p =  Paginator(objs, 10) 
+        print(len(objs))
+        #by default 1st page is sent
+        page_obj = p.page(1)
+        page_number =  1
+        #if a get request asks for a page, that page is stored in page_obj
+        if request.method == "GET":
+                page_number = request.GET.get('page')
+                if page_number == None:
+                    page_number =1
+                page_obj = p.page(page_number)
+        return render(request, 'mathangoapp/profile.html', {
+                "username":username,
+        	"user_himself":user_himself,
+        	"totalright":totalright,
+        	"is_following" : is_following,
+        	"avgresponsetime":avgresponsetime,
+        	"is_following" : is_following,
+        	"nooffollowers":nooffollowers,
+        	"nooffollowing":nooffollowing,
+        	"page_obj":page_obj,
+        	"page_number":page_number
+        })
 
 
 def inbox(request):
     content = request.POST['content']
     obj = Message(creator=request.user, content=content)
     obj.save()
+    return HttpResponseRedirect(f"profiles/{request.user.username}?page=1")
     
 def login_view(request):
     if request.method == "POST":

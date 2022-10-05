@@ -39,7 +39,7 @@
 {% endif %}
 {% if user_himself %}
 <div style="position:relative;left:50%;top:30px;width:fit-content;">
-    <form action="" method="post">
+    <form action="{% url 'inbox' %}" method="post">
         {% csrf_token %}
         <span>Post your message</span>
         <textarea class="form-control" placeholder="Your Message" name="content" style="width:fit-content"></textarea>
@@ -51,9 +51,12 @@
 <br>
 <hr>
 <div id="inbox" class="container">
-    
+	<div class="card">
+BRO
+</div>    
+
     {% for message in page_obj %}
-    <div id="message.id" class="card">
+    <div id="{{ message.id }}" class="card">
     <div>
     {{ message.creator }}
     </div>
