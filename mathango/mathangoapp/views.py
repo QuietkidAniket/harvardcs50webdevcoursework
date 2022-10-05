@@ -36,8 +36,20 @@ def search(request):
     profile(request, username)
 
 def leaderboard(request):
+    allobjs = list(UserStats.objects.all())
+    sortedobjs = list()
+    max = 0
+    for i in range(0, len(allobjs)):
+        for obj in allobjs:
+            if obj.avg_response_time > max:
+                max = obj.avg_response_time 
+                sortedobjs.append(obj)
+                allobjs.remove(obj)
+    
+    print(sortedobjs)
+                 
     reload(request)
-    pass
+    return render('leaderboard.html')
 
 def game(request):
     if request.method == "GET":
