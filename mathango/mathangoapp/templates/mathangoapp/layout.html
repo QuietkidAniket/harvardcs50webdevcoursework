@@ -32,7 +32,7 @@
                 {% if request.user.is_authenticated %}
                     <a class="nav-link" href="{% url 'profile' user.username %}?page=1" data-toggle="tooltip" data-placement="bottom" title="Profile"><span class="d-md-none align-top mr-2">{{ user.username }}</span><i class="fas fa-user-circle"></i></a>
                     <a class="nav-link" href="{% url 'index' %}" data-toggle="tooltip" data-placement="bottom" title="Play">Play</a>
-                    <a class="nav-link" href="{% url 'leaderboard' %}" data-toggle="tooltip" data-placement="bottom" title="Leaderboard">Leaderboard</a>
+                    <a class="nav-link" href="{% url 'leaderboard' %}?page=1" data-toggle="tooltip" data-placement="bottom" title="Leaderboard">Leaderboard</a>
                     <a class="nav-link" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Log out">Log out</a>
                 {% endif %}
                 {% if not request.user.is_authenticated %}

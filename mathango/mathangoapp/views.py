@@ -36,20 +36,37 @@ def search(request):
     profile(request, username)
 
 def leaderboard(request):
+    reload(request)
     allobjs = list(UserStats.objects.all())
     sortedobjs = list()
+    tempobj = None
     max = 0
     for i in range(0, len(allobjs)):
         for obj in allobjs:
-            if obj.avg_response_time > max:
-                max = obj.avg_response_time 
-                sortedobjs.append(obj)
-                allobjs.remove(obj)
+            if obj.total_right > max:
+                max = obj.totak_right
+                tempobj = obj 
+            sortedobjs.append(tempobj)
+            allobjs.remove(tempobj)
     
     print(sortedobjs)
                  
-    reload(request)
-    return render('leaderboard.html')
+    
+    p =  Paginator(sortedobjs, 10) 
+    print(len(sortedobjs))
+    #by default 1st page is sent
+    page_obj = p.page(1)
+    page_number =  1
+    #if a get request asks for a page, that page is stored in page_obj
+    if request.method == "GET":
+            page_number = request.GET.get('page')
+            if page_number == None:
+                page_number =1
+            page_obj = p.page(page_number)
+    return render(request, 'mathangoapp/leaderboard.html',{
+       "page_obj" : page_obj,
+       "page_number" : page_number    
+    }) 
 
 def game(request):
     if request.method == "GET":
@@ -190,7 +207,7 @@ def profile(request,username):
     all_objs = list(reversed(Message.objects.all()))
     nooffollowers = len(list(user.followers_list.all()))
     nooffollowing = len(list(user.following_list.all()))
-    #print(page_obj)
+
     
         
         
