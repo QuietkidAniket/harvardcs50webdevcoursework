@@ -15,14 +15,17 @@
                 card.style.padding = '10px';
             }
             if( card.id == 2){
+                card.innerHTML = '<img src="https://www.freepnglogos.com/uploads/medal-png/gold-medal-28.png" style="width:30px;height:30px;position:absolute;left:80px;">'+ card.innerHTML;
                 card.style.borderColor = 'gold';
                 card.style.borderWidth = '5px';
             }
             if(card.id == 3){
+                card.innerHTML = '<img src= "https://www.pngitem.com/pimgs/m/551-5515761_medals-drawing-platinum-silver-medal-png-transparent-png.png" style="width:30px;height:30px;position:absolute;left:80px;>'+card.innerHTML
                 card.style.borderColor = 'silver';
                 card.style.borderWidth = '5px';
             }
             if(card.id == 4){
+                card.innerHTML = '<img src= "https://www.pngkey.com/png/detail/420-4206994_bronze-medal-gold-silver-medal-png.png" style="width:30px;height:30px;position:absolute;left:80px;>'+card.innerHTML
                 card.style.borderColor = 'brown';
                 card.style.borderWidth = '5px';
             }
@@ -57,7 +60,7 @@
     
         
 <div id="rank" style="position:relative ;left:2px;width:fit-content;"></div>    
-<div style="position:absolute;left:30%;width:fit-content;"><a href="{% url 'profile' obj.user.username %}?page=1&page2=1" style="color:black">{{ obj.user }}</a></div>
+<div style="position:absolute;left:30%;width:fit-content;"><a href="{% url 'profile' obj.user.username %}?page=1&page2=1" style="color:rgb(0, 88, 189)">{{ obj.user }}</a></div>
 <div style="position:absolute;left:60%;width:fit-content;">{{ obj.total_right }} </div>
 <div style="position:absolute;left:80%;width:fit-content;">{{ obj.avg_response_time }} seconds</div>
 

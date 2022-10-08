@@ -11,6 +11,7 @@ import random
 # Create your views here.
 
 def index(request):
+    
     if request.user.is_authenticated:
         reload(request)
         return render(request, "mathangoapp/index.html")
@@ -154,7 +155,7 @@ def game(request):
                     "state": "Incorrect"
                 })       
     else:
-        return HttpResponse("Invalid Request", 404)
+        return HttpResponseRedirect('invalid')
 
 def reload(request):
     user = request.user 
@@ -188,7 +189,7 @@ def reload(request):
                 except:
                     avg_response_time = 0.0
                 finally:
-                    print("bruh : lol : ",avg_response_time)
+                    
                     userstatobj.user=user
                     userstatobj.avg_response_time = float(avg_response_time) 
                     userstatobj.total_right = total_right  
@@ -213,17 +214,27 @@ def follow(request, username):
     except:
         follow_obj = Follow(user = request.user, following = user)
         follow_obj.save() 
-        return HttpResponseRedirect(reverse(f"/profiles/{username}?page=1"))
+        
+        return HttpResponseRedirect(f"/profiles/{username}?page=1")
 
+def invalid(request):
+    return render(request, 'mathangoapp/invalid.html')
 
 def search(request):
     username= request.POST['q']
-    return HttpResponseRedirect(f"profiles/{username}?page=1")
+    try:
+        return HttpResponseRedirect(f"profiles/{username}?page=1")
+    except:
+        return HttpResponseRedirect('invalid')
 
-def profile(request,username):
+def profile(request, username):
     page_number = 1
-
-    user = User.objects.get(username = username)
+    user= None
+    try: 
+        user = User.objects.get(username = username)
+        print(user)
+    except:
+        return HttpResponseRedirect('invalid')
     user_stats = UserStats.objects.get(user = user)
     username = user.username
     date_joined = user.date_joined
@@ -255,10 +266,9 @@ def profile(request,username):
     try:
         for following in Follow.objects.filter(user = request.user).all():
             following_users.append(following.following)
-        print(following_users)
+        
         for user in following_users:
-            print(user)
-            print(Message.objects.filter(creator = user).all())
+            
             temp_objs.extend(user.posts.all())
         for obj in all_objs:
             if obj in temp_objs:
@@ -285,12 +295,21 @@ def profile(request,username):
     #searching for user's messages
     page_number2=0
     page_obj2 = None
+    objown = None
+    try: 
+        user = User.objects.get(username = username)
+        
+    except:
+        return HttpResponseRedirect('invalid')
+    
     try:
-        objown = Message.objects.filter(creator = user)
+        
+        objown = list(Message.objects.filter(creator = user))
 
     except: 
         print("no such objects")
     finally:    
+        
         p2 =  Paginator(objown, 10) 
         
         #by default 1st page is sent

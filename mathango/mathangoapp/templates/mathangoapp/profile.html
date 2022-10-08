@@ -10,8 +10,11 @@
         const parentelement = element.parentElement;
 
         const username  = parentelement.id ;
+        
         fetch(`/follow/${username}`);
+        
         console.log('follow/unfollow request');
+        
         window.location.reload();
 
     }
@@ -30,6 +33,9 @@
 {% if not is_following %}  
 <div id="{{ username }}">
     <button class="btn btn-primary" id="follow" onclick="follow()" style="position:relative;left:70%">Follow</button>
+</div>
+<div style="position:relative;left:50%;color:grey;padding:10px">
+    (Follow {{ username }} to view his/her posts)
 </div>
 {% endif %}
 {% if is_following %}
@@ -55,11 +61,56 @@
 <br>
 <hr>
 
-    {% if user_himself %}
-    <h2>Your Posts</h2>
-    {% if length1 == 0  %}
+    {% if user_himself or is_following %}
+    <h2>{% if user_himself %} Your {% else %} {{ username }}'s {% endif %} Posts</h2>
+    {% if length2 == 0  %}
     No posts
     {% endif %}
+
+    
+    
+{% for message2 in page_obj2 %}
+<div id="{{ message.id }}" class="card">
+<div>
+{{ message2.creator }}
+</div>
+<div>{{ message2.date }}</div>
+<div>{{ message2.content }}</div>
+</div>
+{% endfor %}
+<div style="position :relative; left : 30%; padding : 20px">
+    Currently at page <strong>{{ page_number2 }}</strong> 
+</div>
+<div style="padding:20px">
+<nav aria-label="Page navigation example" style="position:relative; left : 30%">
+    <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?page2 =1&page=1"> Go to page 1 </a></li>
+    {% if page_obj2.has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.previous_page_number }}&page=1">Previous</a></li>
+    {% endif %}
+      
+     {% if page_obj2.has_next %}
+      <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.next_page_number }}&page=1">Next</a></li>
+      {% endif %}
+    </ul>
+</nav>
+</div>
+{% endif %}
+    
+    
+
+
+<hr>
+
+
+{% if user_himself %}
+<h2>Posts from Users whom you follow</h2>
+{% if length1 == 0  %}
+    No posts
+    {% endif %}
+
+
+    
     {% for message in page_obj %}
     <div id="{{ message.id }}" class="card">
     <div>
@@ -89,38 +140,9 @@
 </nav>
 </div>
 {% endif %}
-<hr>
-{% if is_following %}
-<h2>Posts from Users whom you follow</h2>
-{% if length2 == 0  %}
-    No posts
-    {% endif %}
-{% for message in page_obj2 %}
-<div id="{{ message.id }}" class="card">
-<div>
-{{ message.creator }}
-</div>
-<div>{{ message.date }}</div>
-<div>{{ message.content }}</div>
-</div>
-{% endfor %}
-<div style="position :relative; left : 30%; padding : 20px">
-    Currently at page <strong>{{ page_number2 }}</strong> 
-</div>
-<div style="padding:20px">
-<nav aria-label="Page navigation example" style="position:relative; left : 30%">
-    <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="?page2 =2&page=1"> Go to page 1 </a></li>
-    {% if page_obj2.has_previous %}  
-    <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.previous_page_number }}&page=1">Previous</a></li>
-    {% endif %}
-      
-     {% if page_obj2.has_next %}
-      <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.next_page_number }}%page=1">Next</a></li>
-      {% endif %}
-    </ul>
-</nav>
-</div>
-{% endif %}
+
+
+
+
 
 {% endblock %}

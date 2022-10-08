@@ -10,7 +10,7 @@ urlpatterns=[
     path("inbox", views.inbox, name="inbox"),
     path("leaderboard", views.leaderboard, name="leaderboard"),
     path("follow/<str:username>", views.follow, name="follow"),
-    
+    path("invalid",views.invalid,name="invalid"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register")
