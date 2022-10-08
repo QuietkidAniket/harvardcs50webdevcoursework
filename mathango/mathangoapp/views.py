@@ -31,29 +31,55 @@ def creategame(request):
     else:
         return HttpResponse("Invalid Request", 404)
         
-def search(request):
-    username= request.POST["search-query"]
-    profile(request, username)
+
 
 def leaderboard(request):
     reload(request)
-    allobjs = list(UserStats.objects.all())
+    allobjstemp = list(UserStats.objects.all())
+    toberemovedfromlist = list(UserStats.objects.filter(avg_response_time=0.0, total_right=0))
+    for obj in toberemovedfromlist:
+        allobjstemp.remove(obj)
+    allobjs = allobjstemp
     sortedobjs = list()
-    tempobj = None
-    max = 0
-    for i in range(0, len(allobjs)):
-        for obj in allobjs:
-            if obj.total_right > max:
-                max = obj.totak_right
-                tempobj = obj 
-            sortedobjs.append(tempobj)
-            allobjs.remove(tempobj)
+    if int(request.GET.get('type')) == 1:
     
-    print(sortedobjs)
+        
+        for i in range(0, len(allobjs)):
+            index = -1
+            max =-1
+            for j in range(0,len(allobjs)):
+                obj = allobjs[j]
+                if obj.total_right > max:
+                    max = obj.total_right
+                    index = j
+            
+            sortedobjs.append(allobjs[index])
+            
+            allobjs.pop(index)
+
+
+    elif int(request.GET.get('type')) == 2:
+        
+        for i in range(0, len(allobjs)):
+            min = 10000000
+            index = -1
+            for j in range(0, len(allobjs)):
+                obj = allobjs[j]
+                if obj.avg_response_time < min:
+                    min = float(obj.avg_response_time)
+                    index = int(j)
+            
+            sortedobjs.append(allobjs[index])
+            
+            allobjs.pop(index)
+    
+    else:
+        return HttpResponse("Invalid Request",404)
+    
                  
     
     p =  Paginator(sortedobjs, 10) 
-    print(len(sortedobjs))
+    
     #by default 1st page is sent
     page_obj = p.page(1)
     page_number =  1
@@ -109,8 +135,12 @@ def game(request):
                     
                     
         elif request.GET.get('state') == 'put':    
+            answer = int(0)
+            if request.GET.get('answer') == '':
+                answer = 0
             answer = int(request.GET.get('answer'))
             ans = int(request.GET.get('correctans'))
+            
             try:
                 if answer == ans:
                     message = "Correct"
@@ -136,31 +166,36 @@ def reload(request):
             userstatobj = UserStats.objects.get(user = user)
         except: 
             userstatobj = UserStats(user=user, avg_response_time=0.0 , total_right=0)
+            userstatobj.save()
+            return 
         #exception
-        try:
-            games = list(user.games_played.all())
-        except:
-            games = []
-        if len(games) !=0 :
-            avg_response_time = 0.0
-            total_wrong = 0
-            total_right = 0
-            rw = 0.0
-            counter = 0.0
-            for game in games:
-                counter = counter+ float(game.avgresponsetime)
-                total_right = total_right + game.right
-            avg_response_time = float(counter/ len(games))
-            print(avg_response_time)
-            userstatobj.user=user
-            userstatobj.avg_response_time = float(avg_response_time) 
-            userstatobj.total_right = total_right  
-            userstatobj.save()
-            
+        finally:
+            try:
+                games = list(user.games_played.all())
+            except:
+                games = []
+            finally:
+                avg_response_time = 0.0
+                total_wrong = 0
+                total_right = 0
+                rw = 0.0
+                counter = 0.0
+                for game in games:
+                    counter = counter+ float(game.avgresponsetime)
+                    total_right = total_right + game.right
+                try:
+                    avg_response_time = float(counter/ len(games))
+                except:
+                    avg_response_time = 0.0
+                finally:
+                    print("bruh : lol : ",avg_response_time)
+                    userstatobj.user=user
+                    userstatobj.avg_response_time = float(avg_response_time) 
+                    userstatobj.total_right = total_right  
+                    userstatobj.save()
+                
         
-        else:   
-            userstatobj = UserStats(user=user, avg_response_time = 0.0 , total_right = 0) 
-            userstatobj.save()
+        
     
 
 def endgame(request, noofquestions, time):
@@ -181,11 +216,17 @@ def follow(request, username):
         return HttpResponseRedirect(reverse(f"/profiles/{username}?page=1"))
 
 
+def search(request):
+    username= request.POST['q']
+    return HttpResponseRedirect(f"profiles/{username}?page=1")
+
 def profile(request,username):
-    page_number = request.GET.get('page')
+    page_number = 1
+
     user = User.objects.get(username = username)
     user_stats = UserStats.objects.get(user = user)
     username = user.username
+    date_joined = user.date_joined
     avgresponsetime = user_stats.avg_response_time
     totalright = user_stats.total_right
     user_himself = False
@@ -210,7 +251,7 @@ def profile(request,username):
 
     
         
-        
+    #retrieving all the users who are followed by request.user    
     try:
         for following in Follow.objects.filter(user = request.user).all():
             following_users.append(following.following)
@@ -227,7 +268,7 @@ def profile(request,username):
         print("no such objects")
     finally:    
         p =  Paginator(objs, 10) 
-        print(len(objs))
+        
         #by default 1st page is sent
         page_obj = p.page(1)
         page_number =  1
@@ -237,8 +278,38 @@ def profile(request,username):
                 if page_number == None:
                     page_number =1
                 page_obj = p.page(page_number)
-        return render(request, 'mathangoapp/profile.html', {
+        elif request.method == "POST":
+            page_number = 1
+            page_obj = p.page(1)
+
+    #searching for user's messages
+    page_number2=0
+    page_obj2 = None
+    try:
+        objown = Message.objects.filter(creator = user)
+
+    except: 
+        print("no such objects")
+    finally:    
+        p2 =  Paginator(objown, 10) 
+        
+        #by default 1st page is sent
+        page_obj2 = p2.page(1)
+        page_number2 =  1
+        #if a get request asks for a page, that page is stored in page_obj
+        if request.method == "GET":
+                page_number2 = request.GET.get('page2')
+                if page_number2 == None:
+                    page_number2 =1
+                page_obj2 = p2.page(page_number2)
+        elif request.method == "POST":
+            page_number = 1
+            page_obj = p.page(1)
+
+
+    return render(request, 'mathangoapp/profile.html', {
                 "username":username,
+                "date_joined" :date_joined,
         	"user_himself":user_himself,
         	"totalright":totalright,
         	"is_following" : is_following,
@@ -247,8 +318,12 @@ def profile(request,username):
         	"nooffollowers":nooffollowers,
         	"nooffollowing":nooffollowing,
         	"page_obj":page_obj,
-        	"page_number":page_number
-        })
+        	"page_number":page_number,
+            "page_obj2":page_obj2,
+            "page_number2":page_number2,
+            "length1":len(page_obj),
+            "length2":len(page_obj2)
+    })
 
 
 def inbox(request):

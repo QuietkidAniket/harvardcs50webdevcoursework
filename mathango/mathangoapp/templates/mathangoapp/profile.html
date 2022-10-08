@@ -21,10 +21,11 @@
 <div id="username" style="font-size:50px;position:relative;left:35%;">
 {{ username }}
 </div>
-<div id="totalright" style="padding:8px;border-radius:5px;width:fit-content;position:relative;left:10%;top:30px;font-size: larger;background-color: rgb(78, 78, 179);color:white"> Total number of right answers : {{ totalright }}</div>
-<div id="avgresponsetime" style="padding:8px;width:fit-content;border-radius:5px;position:relative;left:40%;top:30px;font-size:larger;background-color: rgb(78, 78, 179);color:white">Average Response Time : {{ avgresponsetime }} seconds</div>
-<div id="nofoffollowers" style="padding:8px;position:relative;left:10%;width:fit-content;border-radius:5px;background-color: rgb(78, 78, 179);color:white">Followers : {{ nooffollowers }}</div>
-<div id="nofoffollowing" style="padding:8px;position:relative;left:10%;top:10px;width:fit-content;border-radius:5px; background-color: rgb(78, 78, 179);color:white">Following : {{ nooffollowing }}</div>
+<div style="color:grey; font-size:small;font-style:'Calibri';position:relative;left:60%;width:130px"> <strong>Account created on</strong> {{ date_joined }}</div>
+<div id="totalright" style="padding:8px;border-radius:5px;width:fit-content;position:relative;left:10%;top:30px;font-size: larger;background-color: rgb(16, 55, 139);color:white"> Total number of right answers : {{ totalright }}</div>
+<div id="avgresponsetime" style="padding:8px;width:fit-content;border-radius:5px;position:relative;left:10%;top:50px;font-size:larger;background-color: rgb(173, 7, 146);color:white">Average Response Time : {{ avgresponsetime }} seconds</div>
+<div id="nofoffollowers" style="padding:8px;position:relative;left:10%;width:fit-content;top:120px;border-radius:5px;background-color: rgb(78, 78, 179);color:white">Followers : {{ nooffollowers }}</div>
+<div id="nofoffollowing" style="padding:8px;position:relative;left:10%;top:140px;width:fit-content;border-radius:5px; background-color: rgb(78, 78, 179);color:white">Following : {{ nooffollowing }}</div>
 {% if not user_himself %}
 {% if not is_following %}  
 <div id="{{ username }}">
@@ -37,6 +38,7 @@
 </div>
 {% endif %}
 {% endif %}
+
 {% if user_himself %}
 <div style="position:relative;left:50%;top:30px;width:fit-content;">
     <form action="{% url 'inbox' %}" method="post">
@@ -49,9 +51,15 @@
 {% endif %}
 <br>
 <br>
+<br>
+<br>
 <hr>
-    
 
+    {% if user_himself %}
+    <h2>Your Posts</h2>
+    {% if length1 == 0  %}
+    No posts
+    {% endif %}
     {% for message in page_obj %}
     <div id="{{ message.id }}" class="card">
     <div>
@@ -61,7 +69,7 @@
     <div>{{ message.content }}</div>
     </div>
     {% endfor %}
-</div>
+    
 
 <div style="position :relative; left : 30%; padding : 20px">
     Currently at page <strong>{{ page_number }}</strong> 
@@ -69,15 +77,50 @@
 <div style="padding:20px">
 <nav aria-label="Page navigation example" style="position:relative; left : 30%">
     <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="?page=1"> Go to page 1 </a></li>
-    {% if .has_previous %}  
-    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="?page=1&page2=1"> Go to page 1 </a></li>
+    {% if page_obj.has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&page2={{ page_number2 }}">Previous</a></li>
     {% endif %}
       
      {% if page_obj.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&page2={{ page_number2 }}">Next</a></li>
       {% endif %}
     </ul>
 </nav>
 </div>
+{% endif %}
+<hr>
+{% if is_following %}
+<h2>Posts from Users whom you follow</h2>
+{% if length2 == 0  %}
+    No posts
+    {% endif %}
+{% for message in page_obj2 %}
+<div id="{{ message.id }}" class="card">
+<div>
+{{ message.creator }}
+</div>
+<div>{{ message.date }}</div>
+<div>{{ message.content }}</div>
+</div>
+{% endfor %}
+<div style="position :relative; left : 30%; padding : 20px">
+    Currently at page <strong>{{ page_number2 }}</strong> 
+</div>
+<div style="padding:20px">
+<nav aria-label="Page navigation example" style="position:relative; left : 30%">
+    <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?page2 =2&page=1"> Go to page 1 </a></li>
+    {% if page_obj2.has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.previous_page_number }}&page=1">Previous</a></li>
+    {% endif %}
+      
+     {% if page_obj2.has_next %}
+      <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.next_page_number }}%page=1">Next</a></li>
+      {% endif %}
+    </ul>
+</nav>
+</div>
+{% endif %}
+
 {% endblock %}

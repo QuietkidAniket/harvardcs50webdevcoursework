@@ -1,6 +1,6 @@
 {% extends 'mathangoapp/layout.html' %}
 {% block scr %}
-<style>
+<script>
     var right = 0;
     
     document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +16,9 @@
     function submitq(){
         ans = document.querySelector("#answer").value;
         answer = document.querySelector('#timevar').className;
+        if(ans === ''){
+            ans = 0
+        }
         fetch('/game?state=put&answer='+ans+'&correctans='+answer)
 
         .then(response => response.json())
@@ -213,13 +216,10 @@ function confirmend(){
             }, 1);
             
         }
-
-
-
-</style>
-<script >
-
+    
 </script>
+
+
 <link href='https://css.gg/alarm.css' rel='stylesheet'>
 <link href='https://css.gg/chevron-double-right-o.css' rel='stylesheet'>
 <link href='https://css.gg/close.css' rel='stylesheet'>

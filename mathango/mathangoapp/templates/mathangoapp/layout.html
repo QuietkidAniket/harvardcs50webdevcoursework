@@ -24,15 +24,16 @@
                 <i class="fas fa-bars" style="color:#fff; font-size:28px;"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
-                <a id="brand-logo" class="navbar-brand mr-auto fancy-font" href="{% url 'index' %}">Mathango</a>
-                <form id="search-form" class="form-inline" action="{% url 'search' %}" method="get" style="position:relative;">
-                  <input id="search-query" class="form-control" type="search" name="q" placeholder="Search User by name">
+                <a id="brand-logo" class="navbar-brand mr-auto fancy-font" href="{% url 'search' %}">Mathango</a>
+                <form id="search-form" class="form-inline" action="{% url 'search' %}" method="post" style="position:relative;">
+                {% csrf_token %}
+                  <input id="search-query" class="form-control" type="text" name="q" placeholder="Search User by name">
                   <button id="search-btn" class="btn" type="submit"><i class="fas fa-search"></i></button>
                 </form>
                 {% if request.user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'profile' user.username %}?page=1" data-toggle="tooltip" data-placement="bottom" title="Profile"><span class="d-md-none align-top mr-2">{{ user.username }}</span><i class="fas fa-user-circle"></i></a>
+                    <a class="nav-link" href="{% url 'profile' user.username %}?page=1&page2=1" data-toggle="tooltip" data-placement="bottom" title="Profile"><span class="d-md-none align-top mr-2">{{ user.username }}</span><i class="fas fa-user-circle"></i></a>
                     <a class="nav-link" href="{% url 'index' %}" data-toggle="tooltip" data-placement="bottom" title="Play">Play</a>
-                    <a class="nav-link" href="{% url 'leaderboard' %}?page=1" data-toggle="tooltip" data-placement="bottom" title="Leaderboard">Leaderboard</a>
+                    <a class="nav-link" href="{% url 'leaderboard' %}?page=1&type=1" data-toggle="tooltip" data-placement="bottom" title="Leaderboard">Leaderboard</a>
                     <a class="nav-link" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Log out">Log out</a>
                 {% endif %}
                 {% if not request.user.is_authenticated %}

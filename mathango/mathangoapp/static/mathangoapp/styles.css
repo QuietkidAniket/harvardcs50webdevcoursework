@@ -1,5 +1,9 @@
 .card{
     padding:20px;
+    width:90%;
+    border-radius:5px;
+    border-style: solid;
+    border-color: rgb(44, 107, 202);
 }
 
 .num{
@@ -17,6 +21,7 @@ width:250px;
 flex-wrap: wrap;
 
 }
+
 
 @media(max-width:700px){
   .num{
@@ -190,7 +195,19 @@ color : rgb(59, 59, 153)
   #dq{
     border-style:solid; border-width:0.5px; border-radius: 5px; border-color: rgb(148, 148, 148);position:relative;top:auto;top:2px;left:30%;font-size:45px;width:fit-content;
   }
+  #sort{
+    position:relative;top:20px;left:50%;height:170px;
+  }
+  @media(max-width:850px){
+    #sort{
+      position:relative;top:20px;left:30%;height:170px;
+    }
+  }
   @media(max-width:700px){
+    #sort{
+      position: relative;
+      left:0%;
+    }
    #message{
     left:10%;
    }
@@ -240,5 +257,8 @@ color : rgb(59, 59, 153)
   #span1{
     position:relative;
     left:5%;
+  }
+  .card{
+    width:auto;
   }
 }
