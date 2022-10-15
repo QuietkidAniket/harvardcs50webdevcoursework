@@ -1,0 +1,10 @@
+Chapters:
+
+0:00 Log in, Register
+0:30 Layout and Mobile Responsiveness
+1:00 Index page
+1:05 Game page
+2:41 Profile page
+3:47 Log out 
+4:38 Leaderboard page
+

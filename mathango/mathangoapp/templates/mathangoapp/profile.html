@@ -71,10 +71,10 @@
     
 {% for message2 in page_obj2 %}
 <div id="{{ message.id }}" class="card">
-<div>
+<div style="font-size:large">
 {{ message2.creator }}
 </div>
-<div>{{ message2.date }}</div>
+<div style="font-size:small;color:gray">{{ message2.date }}</div>
 <div>{{ message2.content }}</div>
 </div>
 {% endfor %}
@@ -84,7 +84,7 @@
 <div style="padding:20px">
 <nav aria-label="Page navigation example" style="position:relative; left : 30%">
     <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="?page2 =1&page=1"> Go to page 1 </a></li>
+    <li class="page-item"><a class="page-link" href="?page2=1&page=1"> Go to page 1 </a></li>
     {% if page_obj2.has_previous %}  
     <li class="page-item"><a class="page-link" href="?page2={{ page_obj2.previous_page_number }}&page=1">Previous</a></li>
     {% endif %}
@@ -113,10 +113,10 @@
     
     {% for message in page_obj %}
     <div id="{{ message.id }}" class="card">
-    <div>
+    <div style="font-size:large">
     {{ message.creator }}
     </div>
-    <div>{{ message.date }}</div>
+    <div style="font-size:small;color:gray">{{ message.date }}</div>
     <div>{{ message.content }}</div>
     </div>
     {% endfor %}

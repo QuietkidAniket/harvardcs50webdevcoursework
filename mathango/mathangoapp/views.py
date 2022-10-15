@@ -222,17 +222,15 @@ def invalid(request):
 
 def search(request):
     username= request.POST['q']
-    try:
-        return HttpResponseRedirect(f"profiles/{username}?page=1")
-    except:
-        return HttpResponseRedirect('invalid')
+    
+    return HttpResponseRedirect(f"profiles/{username}?page=1&page2=1")
+    
 
 def profile(request, username):
     page_number = 1
     user= None
     try: 
         user = User.objects.get(username = username)
-        print(user)
     except:
         return HttpResponseRedirect('invalid')
     user_stats = UserStats.objects.get(user = user)
