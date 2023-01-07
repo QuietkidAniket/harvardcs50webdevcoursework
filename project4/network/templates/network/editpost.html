@@ -1,0 +1,25 @@
+{% extends "network/layout.html" %}
+{% block body %}
+<div style="position:relative;left:15%;width:70%">
+    <h2>Editing Post</h2>
+        <form action="{% url 'edit' post.id %}" method = "post">
+            {% csrf_token %}
+
+            <div class = "input-group mb-3">
+             <div class="input-group-prepend">
+                <span class="input-group-text">Title</span>
+             </div>
+             <input class= "form-control" type = "text" value="{{ post.title }}" name = "title" id = "title">
+            </div>
+
+            <div class="input-group mb-3" style="height:50%">
+             <div class="input-group-prepend" >
+                <span class="input-group-text">Content</span>
+              </div>
+             <textarea class = "form-control" id = "body" name = "body">{{ post.content }}</textarea>
+            </div>
+            <input class = "form-control" type = "submit" value = "Save Edited Post" class = "btn btn-primary-light " id = "submit" style = "width : 15%; background-color : rgb(93, 157, 241); color : white">
+        </form>
+        
+</div>
+{% endblock %}

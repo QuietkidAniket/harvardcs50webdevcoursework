@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title> A javascript example</title>
+    <script>
+    function hello(){
+       alert('Hello world!');
+    }
+    function change(){
+        if(document.querySelector('h1').innerHTML === 'Hello'){
+            document.querySelector('h1').innerHTML = 'Changed'; 
+        }else{
+            document.querySelector('h1').innerHTML = 'Already Changed';
+        }
+    }
+    let counter = 0;
+    function count(){
+        counter++;
+        document.querySelector('h2').innerHTML = counter;
+        if(counter % 10 == 0){
+             alert(`counter is now ${counter}`);
+        }
+    }
+    </script>
+    </head>
+    <body>
+        <h1>Hello</h1>
+        <h2>Counter</h2>
+        <button onclick = "hello()">click here</button>
+        <button onclick = "change()">Change the heading! lol</button>
+        <button onclick = "count()"> increment counter by 1</button>
+        
+    </body>
+</html>

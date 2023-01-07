@@ -1,0 +1,95 @@
+{% extends "mathangoapp/layout.html" %}
+{% block scr %}
+<script>
+    var c = 0
+    document.addEventListener('DOMContentLoaded', ()=>{
+        document.querySelectorAll('.card').forEach((card)=>{
+            c = c+1
+            card.id = c;
+            if(card.firstElementChild.id =='rank'){
+                card.firstElementChild.id = 'rank'+c-1;
+                card.firstElementChild.innerHTML = c-1;
+            }
+            if(card.id == 1){
+                card.style.borderColor = 'black';
+                card.style.padding = '10px';
+            }
+            if( card.id == 2){
+                card.innerHTML = '<img src="https://www.freepnglogos.com/uploads/medal-png/gold-medal-28.png" style="width:30px;height:30px;position:absolute;left:80px;">'+ card.innerHTML;
+                card.style.borderColor = 'gold';
+                card.style.borderWidth = '5px';
+            }
+            if(card.id == 3){
+                card.innerHTML = '<img src= "https://www.pngitem.com/pimgs/m/551-5515761_medals-drawing-platinum-silver-medal-png-transparent-png.png" style="width:30px;height:30px;position:absolute;left:80px;>'+card.innerHTML
+                card.style.borderColor = 'silver';
+                card.style.borderWidth = '5px';
+            }
+            if(card.id == 4){
+                card.innerHTML = '<img src= "https://www.pngkey.com/png/detail/420-4206994_bronze-medal-gold-silver-medal-png.png" style="width:30px;height:30px;position:absolute;left:80px;>'+card.innerHTML
+                card.style.borderColor = 'brown';
+                card.style.borderWidth = '5px';
+            }
+        });
+        
+        
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+
+<div id="sort">
+    <h3>Sort on Basis of:</h3>
+    <a href="{% url 'leaderboard' %}?page=1&type=1"><button class="btn btn-success" >Total Right Answers</button></a>
+        <a href="{% url 'leaderboard' %}?page=1&type=2"><button class="btn btn-success" >Average Response Time</button>  </a>
+
+</div>
+<div class="container">
+    <div class="card">
+        <div id="lol" style="position:relative;left:10px;width:fit-content;height:65px"><strong>Ranking</strong></div>
+        <div style="position:absolute;left:30%;width:fit-content;"><strong>   User </strong></div>
+        <div style="position:absolute;left:50%;width:100px;"><strong> Total right answers</strong></div>
+        <div style="position:absolute;left:80%;width:fit-content;"> <strong> Average Response Time </strong> </div>
+        </div>
+
+
+{% for obj in page_obj %}
+
+
+<div class="card" >
+    
+        
+<div id="rank" style="position:relative ;left:2px;width:fit-content;"></div>    
+<div style="position:absolute;left:30%;width:fit-content;"><a href="{% url 'profile' obj.user.username %}?page=1&page2=1" style="color:rgb(0, 88, 189)">{{ obj.user }}</a></div>
+<div style="position:absolute;left:60%;width:fit-content;">{{ obj.total_right }} </div>
+<div style="position:absolute;left:80%;width:fit-content;">{{ obj.avg_response_time }} seconds</div>
+
+</div>
+
+{% endfor %}
+
+<br>
+<br>
+<hr>
+</div>
+<div style="position :relative; left : 30%; padding : 20px">
+    Currently at page <strong>{{ page_number }}</strong> 
+</div>
+<div style="padding:20px">
+<nav aria-label="Page navigation example" style="position:relative; left : 30%">
+    <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?page=1"> Go to page 1 </a></li>
+    {% if .has_previous %}  
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    {% endif %}
+      
+     {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+      {% endif %}
+    </ul>
+</nav>
+</div>
+
+
+{% endblock %}
+

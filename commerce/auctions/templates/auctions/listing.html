@@ -1,0 +1,126 @@
+{% extends "auctions/index.html" %}
+{% block head %}
+    <style>
+        .card {
+    /* Add shadows to create the "card" effect */
+        margin : 10px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        
+        transition: 0.3s;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+        transform: scale(1.00);
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container {
+        padding: 2px 1px;
+        }
+    </style>
+    
+{% endblock %}
+{% block body %}
+    <h2>{{ listing.title }}</h2>
+    <br>
+    <br>
+    {% if iswatching %}
+        <div style = "position : relative; left : 10%;text-align: center;  background-color : grey; width:80%;  color : white; border-radius: 3px;">Watching</div>
+    {% endif %}
+    <img src= "{{ listing.picture }}" style = "position : relative; left: 20%; margin-top : 5px; max-height : 30%; max-width : 60%; box-shadow : 0px 5px 20px 0px ;" alt="no file found" >
+    <br>
+    <br>
+    <div style = "position: relative; padding : 20px; left: 30%; font-weight: 700; font-size: large; ">
+        {{ listing.title }}
+    </div>
+    <br>
+    <br>
+        <div style = "position: relative; left: 20%; font-weight: 600; width:60% ">
+        {{ listing.description }}
+        <br><br>
+        Starting Bid   &nbsp;   :  &nbsp; &nbsp;  ${{ listing.startingBid }}
+        <br><br>
+        Current Bid    &nbsp;   :  &nbsp; &nbsp; ${{ listing.currentBid }}
+        <br><br><br>
+        Auction started by &nbsp;   {{ listing.creator }}  on  {{ listing.creation_date }}
+        </div>
+
+    {% if not listing.flactive %}
+        {% if user == listing.buyer %}
+            <div><img src = "https://i.pinimg.com/originals/87/6f/ab/876fab6207f93c293ae77a70f188c402.gif"></div>
+        {% endif %}
+        <div style = "position: relative; left : 20%"><strong>{{ message }}</strong></div>
+    {% else %}        
+        {% if user.is_authenticated %}
+            <div style = "position: relative; left : 60%">
+                {% if iswatching %}                
+                    <a href = "{% url 'removefromwatchlist' id %}"> <input class = "btn primary" type = "button" value = "Remove from watchlist" name = "removefromwatchlist" style = "background-color:rgb(10, 127, 182); color : white"></a>
+                {% else %}
+                <a href = "{% url 'addtowatchlist' id %}"> <input class = "btn primary" type = "button" value = "Add to watchlist" name = "addtowatchlist" style = "background-color:rgb(10, 127, 182); color : white;" ></a>
+                {% endif %}
+            </div>
+        {% endif %}
+        <hr>
+        {% if listing.creator == user and user.is_authenticated %}
+            <div style = "position: relative; left:30%; min-width : 120px"><a href = "{% url 'closeauction' id %}"><button class= "btn primary" id = "Close Auction" style = "height : 45px; width : 10%; min-width: 150px; background-color: rgb(216, 47, 41); color:white; " value = "Close Auction">Close Auction</button></a></div>
+        {% endif %}
+        <div style="position:relative; left : 20%; padding-top:20px">
+        {% if user.is_authenticated and listing.flactive == True and not listing.creator == user %}
+            {% if listing.currentBid == None %}
+                {% with minbid=listing.startingBid %}               
+                <div>
+                    <form action="{% url 'bid' listing.id %}" method= "post">
+                        {% csrf_token %}
+                            <input type = "number" name = "bidamount" min="{{ minbid }}">
+                            <input type = "submit" class= "btn primary" name = "Bid" value = " Bid " style = "background-color : rgb(69, 158, 47); color : white" >
+                    </form>
+                </div>
+                {% endwith %}
+            {% else %}
+                {% with minbid=listing.currentBid %}
+                    <div>
+                        <form action = "{% url 'bid' listing.id %}" method= "post">
+                            {% csrf_token %}
+                                <input type = "number" name = "bidamount" min="{{ minbid }}">
+                                <input type = "submit" class = "btn primary" name = "Bid" value = " Bid " style = "background-color : rgb(69, 158, 47); color : white" >
+                        </form>
+                    </div>
+                {% endwith %}
+            {% endif %}
+        {% endif %}
+        {% if listing.creator == user %}
+            <div style = "font-size: large; font-weight: bold;">(You cannot Bid on your created listing)</div>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <a href = "{% url 'login' %}"><strong>Login to Bid for this item</strong></a>
+        {% endif %}
+        </div>
+        <hr>
+        {% if user.is_authenticated %}
+            <div style="position : relative; left : 10%; width : 80%;">
+                <form action = "{% url 'comment' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="comment" placeholder="Enter comment here" style=" width : 50%"></textarea>
+                    <input type = "submit" class= "btn primary" value="Comment" style="background-color: rgb(10, 127, 182); color : white;">
+                </form>
+            </div>
+        {% else %}
+            <a href = "{% url 'login' %}"><strong>Login to Comment</strong></a>
+        {% endif %}
+    {% endif %} 
+        <div id = "comments" class= "container">
+            {% for commentobj in comments %}
+                <div class="card" style = "width : 60%">
+                    <div style = "position : relative; left : 10%; font-size: medium; font-weight: 500; width : 100px; background-color: burlywood; text-align: center; border-radius: 2px;">{{ commentobj.user }}</div>
+                    <div style = "position : absolute; left : 70%; margin-top : 0px; font-size: small; font-weight: 500; width : 30%; color : gray">on {{ commentobj.creationdate }}</div>
+                    <br>
+                    <div style = "position : relative; left : 5%;">{{ commentobj.comment }}</div>
+                </div>
+            {% endfor %}              
+        </div>
+       
+{% endblock %}
+    
+https://i.pinimg.com/originals/87/6f/ab/876fab6207f93c293ae77a70f188c402.gif

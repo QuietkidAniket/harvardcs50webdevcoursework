@@ -1,0 +1,16 @@
+body {
+    padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a:hover{
+    text-decoration: none;
+    color : rgb(56, 121, 218);
+    opacity: 1;
+    transform: scale(1.2);
+    transition: all 0.0 s ease-in-out 1s;
+}
+
+a:active{
+    color: blue;
+}

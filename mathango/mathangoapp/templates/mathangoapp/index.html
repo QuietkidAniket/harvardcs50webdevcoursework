@@ -1,0 +1,55 @@
+{% extends "mathangoapp/layout.html" %}
+{% block body %}
+    <div style="position:relative;left:50%">
+        <h1 style="width:fit-content">Play</h1>
+    </div>
+    
+
+        <hr>
+        <h3 id="header2" >Information and Rules:</h3>
+
+            <div id="rules">
+                
+                <ul>
+                    <li> Players have to answer certain no. of "mental-math" arithmetic questions within a stipulated time</li>
+                    <li> On clicking on either play button under custom game or on any preset game button below would take you to the game page </li>                    
+                    <li> Any other answer other than the correct one is regarded as wrong, so avoid errors while typing. Blank answers are also regarded as incorrect reply</li>
+                    <li> Mathango is bringing many maths enthusiasts from around the world to compete together. The platform has a leaderboard which you can access by clicking the leaderboard tab</li>
+                </ul>
+            </div>
+            <hr>
+            <div id="dif_show" class="input-group mb-3" >
+            <div id="span1" class="input-group-prepend" >
+               <span class="input-group-text" > select Game : </span>
+             </div>
+             <div class="flex-container"  aria-label="Select Difficulty" style="position:relative;margin-right:100px">
+                <div><a href="{% url 'creategame' %}?time=120"><button type="button" class="btn btn-primary dif" value="1" title="have to answer as many questions within 2 minutes">2 minute game</button></a></div>
+                <div><a href="{% url 'creategame' %}?time=90"><button type="button" class="btn btn-primary dif" value="2" title="have to answer as many questions within 1 minutes and 30 seconds">1 minute 30 seconds game</button></a></div>
+                <div><a href="{% url 'creategame' %}?time=60"><button type="button" class="btn btn-primary dif" value="3" title="have to answer as many questions within 1 minute" >1 minute game</button></a></div>
+                <div><a href="{% url 'creategame' %}?time=40"><button type="button" class="btn btn-primary dif" value="4" title="have to answer as many questions within 40 seconds">40 seconds game</button></a></div>
+                <div><a href="{% url 'creategame' %}?time=30"><button type="button" class="btn btn-primary dif" value="5" title="have to answer as many questions within 30 seconds">30 seconds game</button></a></div>
+              </div>
+        </div>
+        <div id="diftext">
+            
+        </div>
+        <hr>
+        <h3 style="position:relative;left:40%">Custom Game</h3>
+        <form action="{% url 'creategame' %}" id="gameform" method="get">
+            {% csrf_token %}
+            <div id="difficulty" class="input-group mb-3" style="position:relative;width:50%" >
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Enter Custom Time</span>
+                </div>
+                <input class="form-control" type="number" value="1" name="time" min="1" max="600">
+            </div>
+            
+            <div class="input group mb-3" style="position:relative;left:40%">
+            <button id="play" class="btn btn-primary" type="submit" value="submit" id="submit" name="submit" >Play</button>
+            </div>
+        </form>
+    
+        
+    </div>
+
+{% endblock %}

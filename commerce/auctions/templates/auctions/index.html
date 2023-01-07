@@ -1,0 +1,101 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block head %}
+    <style>
+        .card {
+    /* Add shadows to create the "card" effect */
+        margin : 10px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        
+        transition: 0.3s;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container {
+        padding: 2px 1px;
+        }
+    </style>
+    
+{% endblock %}
+<body>
+{% block header %}
+
+    <h1>Auctions</h1>
+    <div>
+        {% if user.is_authenticated %}
+            Signed in as <strong>{{ user.username }}</strong>.
+        {% else %}
+            Not signed in.
+        {% endif %}
+    </div>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+        </li>
+        {% if user.is_authenticated %}
+            <li>
+                <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+            </li>
+            <li>
+                <a class="nav-link" href="{% url 'watchlist' %}">Watchlist <sup style = "color : white; background-color : grey">{{ watchlistlength }}</sup></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            </li>
+            <li class="nav-item">
+                <a class =  "nav-link" href ="{% url 'newlisting' %}">Create Listing</a>
+            </li>
+           
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+        {% endif %}
+    </ul>
+    <hr>
+{% endblock %}
+{% block body %}
+    {% if not activelistings %}
+     {{ error_message }}
+    {% else %}
+        <h2>{{ heading }}</h2>
+        <div>
+        {% for listing in activelistings %}
+            {% block listingtiles %}
+            {% with id=listing.id %}
+                <a href = "{% url 'listing' id%}">
+                <div class = "card">
+                <div class = "container" style = "width : 90%; padding : 5px; height : 300px; margin-top : 2%; margin : 1%; color : black; ">
+                    <div>
+                    <img src= "{{ listing.picture }}" style = "padding : 0px;margin-top : 5px; max-height : 300px; max-width : 300px">
+                    </div>
+                        <div style = "position:absolute; top : 40px; margin-top : 0px; left : 400px; width : 400px"><strong>{{ listing.title }}</strong>
+                        <br>
+                        <div style = "font-size: small; color : gray">Category : {{ listing.category.category }}</div>
+                        <br><br>
+                        <div style = "font-weight:500;">Price : ${{ listing.startingBid }}</div>
+                        <br><br>
+                        <div style="font-size:small; color:grey ">Created {{ listing.creation_date }}</div>
+                        </div>
+                    
+                </div>
+                </div>
+                </a>
+            {% endwith %}
+            {% endblock %}
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+</body>
+
