@@ -73,7 +73,7 @@ Used for logging user in, new user registration/account creation and logging use
  - ```__init__.py```  : used to mark directories on disk as Python package directories.
  - ```asgi.py```      : **A**synchronous **S**erver **G**ateway **I**nterface file 
  - ```settings.py```  :  Django settings file contains all the configuration of Mathango Django Project
- - ```urls.py```      : Used for listing url outes to function based views, class based views and including another URLconf using the include function
+ - ```urls.py```      : Used for listing url routes to function based views, class based views and including another URLconf using the include function
  - ```wsgi.py```      : Django's primary deployment platform
 ## ```mathangoapp```  : Mathango App 
  - ```__pycache__```  : cache of all executable files
