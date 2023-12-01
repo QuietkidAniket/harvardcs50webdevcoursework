@@ -1,4 +1,5 @@
 {% extends 'mathangoapp/layout.html' %}
+{% load static %}
 {% block scr %}
 <script>
     var right = 0;
@@ -95,6 +96,7 @@ function confirmend(){
 
     var timecounter = 0;
     function resumetimer(){
+        getq();
         document.querySelector('#answer').disabled = false;
         document.querySelector('#ans_btn').disabled = false;
         document.querySelector('#stop').hidden = null;
@@ -220,15 +222,16 @@ function confirmend(){
 </script>
 
 
-<link href='https://css.gg/alarm.css' rel='stylesheet'>
-<link href='https://css.gg/chevron-double-right-o.css' rel='stylesheet'>
-<link href='https://css.gg/close.css' rel='stylesheet'>
 
 {% endblock %}
 {% block body %}
 
     <div class="box" >
-    <a href="{% url 'index' %}" ><button class="btn btn-danger" title="Back to Main menu" id="exit"><i class="gg-close"></i></button></a>
+    <a href="{% url 'index' %}" >
+        <button style="background-color:white; border: 0;" title="Back to Main menu" id="exit">
+            <img src="{% static 'mathangoapp/crossicon.png' %}" height="50px">
+        </button>
+    </a>
     <div class="{{ diff }}" id="diflev" style="position:relative; left:10%; width:50%;padding:10px;font-weight: 500;"><strong>Game time</strong> : {{ customtime }} seconds</div>
     
     <input type="hidden" class="" id="timevar" name="timehidden" value="{{ customtime }}">
@@ -252,7 +255,7 @@ function confirmend(){
     <div style="position:relative;margin:auto;padding:40px">
         <input type="number" class="form-control" placeholder="Enter your answer" id="answer">
         <br>
-        <button class="btn btn-success" id="ans_btn" onclick="submitq()" style="width:60px; position:relative;left: 80%"><i class="gg-chevron-double-right-o"></i></button> 
+        <button class="btn btn-success" id="ans_btn" onclick="submitq()" style="width:60px; position:relative;left: 80%"><img src="{% static 'mathangoapp/nexticon.png' %}" style="height:20px;"></button> 
         <button class="btn btn-success" id="restart" style="width:90px"><i class="reload"></i>Play Again</button> 
     </div>
     <div id="numpad" aria-label="Select Difficulty" >

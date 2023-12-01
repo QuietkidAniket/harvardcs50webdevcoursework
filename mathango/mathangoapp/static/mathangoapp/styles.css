@@ -40,6 +40,8 @@ width:150px;
 flex-wrap: wrap;
 
 }
+
+
 }
 #search-btn{
   color:white;
@@ -89,6 +91,13 @@ color : rgb(59, 59, 153)
   #search-btn:hover{
     transform:scale(1.2)
   }
+  #vitlogo{
+    height:100px;
+    padding:10px;
+    margin-right: 12em;
+  
+  }
+
   main {
     margin-top: 6em;
     margin-bottom: 5em; }
@@ -98,18 +107,43 @@ color : rgb(59, 59, 153)
         
         margin-top: 6em;
         margin-bottom: 5em; } }
+      #postmessage{
+        width:400px;
+      }
     @media (max-width: 767px) {
       main {
         
         margin-top: 4.61538em;
-        margin-bottom: 4.54545em; } }
+        margin-bottom: 4.54545em; } 
+        
+      }#vitlogo{
+        height:70px;
+        padding:10px;
+        margin-right:120px;
+      }
+      
+      
     @media (max-width: 575px) {
       main {
         margin-top: 20px;
         margin-bottom: 2px; } }
+      @media (max-width:900px){
+        #postmessage{
+          width:200px;
+        }
+      }
     main div.tab-content div.tab-pane {
       margin-top: 1.5em; }
       @media (max-width: 575px) {
+        #vitlogo{
+          height:60px;
+          padding:10px;
+          margin:0px;
+        }
+        #postmessage{
+          width:200px;
+          height:100px;
+        }
         main div.tab-content div.tab-pane {
           margin-top: 1.5em; } }
         

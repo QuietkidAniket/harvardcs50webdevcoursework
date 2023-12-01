@@ -89,6 +89,7 @@ function confirmend(){
 
     var timecounter = 0;
     function resumetimer(){
+        getq();
         document.querySelector('#answer').disabled = false;
         document.querySelector('#ans_btn').disabled = false;
         document.querySelector('#stop').hidden = null;
@@ -147,8 +148,7 @@ function confirmend(){
 
     function starttimer(){
         time = document.querySelector("#timevar").value;
-        time= time*1000
-        console.log(time)
+        time= time*1000;
         getq();
     document.querySelector("#message").hidden = "hidden";
     document.querySelector('#time').style.opacity = 1;
@@ -182,6 +182,7 @@ function confirmend(){
             document.querySelector("#stop").onclick = () => {
             clearInterval(x);  
             timecounter = distance;  
+            document.querySelector("#dq").innerHTML = "";
             document.querySelector("#resume").hidden = null;
             document.querySelector("#stop").hidden = "hidden";
             document.querySelector('.box').style.borderColor = "rgb(69, 114, 211)";
