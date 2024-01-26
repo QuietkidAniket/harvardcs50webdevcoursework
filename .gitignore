@@ -1,0 +1,8 @@
+# ignore all .log files
+*.log
+
+# ignore all files in any directory named temp
+temp/
+
+# keep my Django key hidden
+airline2/airline/key.txt
