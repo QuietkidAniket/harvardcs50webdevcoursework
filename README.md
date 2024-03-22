@@ -28,7 +28,7 @@
 
 ## 💻 Frameworks and programming languages :
 
-<div class="flex" style= "align-items:center">
+<div class="flex" style= "align-items:center; width:700px" >
 
 <img src="assets/img/django.svg" style="height:100px;padding:50px">
 <img src="assets/img/python.svg" style="height:100px;padding:50px">
