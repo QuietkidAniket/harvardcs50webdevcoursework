@@ -30,11 +30,11 @@
 
 <div class="flex" style= "align-items:center">
 
-<div><img src="assets/img/django-logo.png" style="height:50px;padding:20px"></div>
+<div><img src="assets/img/django.svg" style="height:50px;padding:20px"></div>
 <div><img src="assets/img/python.svg" style="height:100px;padding:20px"></div>
 <div><img src="assets/img/JavaScript.png" style="height:100px;padding:20px"></div>
-<div><img src="assets/img/html.png" style="height:100px;padding:20px"></div>
-<div><img src="assets/img/css.jpg" style="height:100px;padding:20px"></div>
+<div><img src="assets/img/html.svg" style="height:100px;padding:20px"></div>
+<div><img src="assets/img/css.svg" style="height:100px;padding:20px"></div>
 <div><img src="assets/img/react.png" style="height:100px;padding:20px"></div>
 
 <div>
