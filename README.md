@@ -50,9 +50,11 @@
 
 <br>
 
-## Capstone Project :
+## 🚀 Capstone Project :
 
 [ mathango ](./mathango/)
+
+Mathango is a small website-based game where during a gaming session a player has to answer as many possible simple arithmetic calculations correctly and accurately within a stipulated time which they can select at the beginning.
 
 <br>
 
