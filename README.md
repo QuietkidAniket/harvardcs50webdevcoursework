@@ -30,12 +30,12 @@
 
 <div class="flex" style= "align-items:center">
 
-<img src="assets/img/django.svg" style="height:50px;padding:20px">
-<img src="assets/img/python.svg" style="height:100px;padding:20px">
-<img src="assets/img/JavaScript.png" style="height:100px;padding:20px">
-<img src="assets/img/html.svg" style="height:100px;padding:20px">
-<img src="assets/img/css.svg" style="height:100px;padding:20px">
-<img src="assets/img/react.png" style="height:100px;padding:20px">
+<img src="assets/img/django.svg" style="height:50px;padding:50px">
+<img src="assets/img/python.svg" style="height:100px;padding:50px">
+<img src="assets/img/JavaScript.png" style="height:100px;padding:50px">
+<img src="assets/img/html.svg" style="height:100px;padding:50px">
+<img src="assets/img/css.svg" style="height:100px;padding:50px">
+<img src="assets/img/react.png" style="height:100px;padding:50px">
 
 <div>
 
