@@ -9,7 +9,7 @@
 <div  class="flex" style="align-items:center;"> 
 
 
-<div><img src="assets/img/harvarduniv.png" style="height:100px;padding:50px"></div>
+<div><img src="assets/img/harvarduniv.png" style="height:100px;padding:50px;position:center"></div>
 
 <div><img src="assets/img/cs50wlogo.png" style="height:100px"></div>
 
