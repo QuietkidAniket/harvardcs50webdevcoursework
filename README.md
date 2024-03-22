@@ -1,6 +1,8 @@
 
 # HARVARD CS50W PROJECTS
 
+<br>
+
 ## This repository stores all the 6 projects I had completed in order to earn the
 <div  class="flex" style="align-items:center"> 
 
@@ -10,14 +12,17 @@
 </div>
 <div style="font-size:20px;font-weight:bold">
 
-[Harvard CS50W Web development using Python and Javascript course](https://pll.harvard.edu/course/cs50s-web-programming-python-and-javascript) 
+[Harvard CS50W Web development using Python and Javascript course (click to view info)](https://pll.harvard.edu/course/cs50s-web-programming-python-and-javascript) 
 
 </div>
 
+<br>
 
 ### <strong> ✅ Verified Certification earned : </strong>
  
 > [Click here to view my CS50W Verified certificate](https://courses.edx.org/certificates/1bca14165d054f91b462067024f30454)
+
+<br>
 
 ## 💻 Frameworks and programming languages :
 
@@ -34,6 +39,8 @@
 
 </div>
 </div>
+
+<br>
 
 ## Capstone Project :
 
