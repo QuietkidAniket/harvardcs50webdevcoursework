@@ -63,7 +63,10 @@ Mathango is a small website-based game where during a gaming session a player ha
 
 <div style="padding-left:50px">
 
-[ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
+[ google search mimic ](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
+
+
+[click here to view the website!](https://quietkidaniket.github.io/googlesearchmimic.github.io/)
 
 
 A website that mimics the overall google search page aesthetics and redirects each request to the google server.
