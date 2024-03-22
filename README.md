@@ -98,10 +98,9 @@ An eBay-like e-commerce auction site that will allow users to post auction listi
 
 <div style="padding-left:50px">
 
-[ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
+[ mail ](./mail/)
 
-
-A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A front-end for an email client that makes API calls to send and receive emails. Useful for understanding the nature and role of GET, POST, PUT and DELETE http requests in REST API.
 
 </div>
 
@@ -110,33 +109,13 @@ A website that mimics the overall google search page aesthetics and redirects ea
 
 <div style="padding-left:50px">
 
-[ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
+[network](./Network/)
 
+A Twitter-like social network website for making posts and following users.
 
-A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
 
 
-* ### Project 5 : 
-
-<div style="padding-left:50px">
-
-[ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
-
-
-A website that mimics the overall google search page aesthetics and redirects each request to the google server.
-
-</div>
-
-
-* ### Project 6 : 
-
-<div style="padding-left:50px">
-
-[ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
-
-
-A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
