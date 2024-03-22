@@ -4,6 +4,8 @@
 <br>
 
 ## This repository stores all the 6 projects I had completed in order to earn the
+
+
 <div  class="flex" style="align-items:center"> 
 
 <img src="assets/img/harvarduniv.png" style="height:100px;padding:50px">
@@ -28,12 +30,12 @@
 
 <div class="flex" style= "align-items:center">
 
-<img src="assets/img/django-logo.png" style="height:50px;padding:20px">
-<img src="assets/img/python.svg" style="height:100px;padding:20px">
-<img src="assets/img/JavaScript.png" style="height:100px;padding:20px">
-<img src="assets/img/html.png" style="height:100px;padding:20px">
-<img src="assets/img/css.jpg" style="height:100px;padding:20px">
-<img src="assets/img/react.png" style="height:100px;padding:20px">
+<img src="assets/img/django-logo.png" style="height:50px;padding:50px">
+<img src="assets/img/python.svg" style="height:100px;padding:50px">
+<img src="assets/img/JavaScript.png" style="height:100px;padding:50px">
+<img src="assets/img/html.png" style="height:100px;padding:50px">
+<img src="assets/img/css.jpg" style="height:100px;padding:50px">
+<img src="assets/img/react.png" style="height:100px;padding:50px">
 
 <div>
 
