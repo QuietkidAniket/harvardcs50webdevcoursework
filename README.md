@@ -61,7 +61,7 @@
 [ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
 
 
-    A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
 
@@ -73,7 +73,7 @@
 [ wiki ](./wikiproject/)
 
 
-    Complete the implementation of Wiki encyclopedia. Was useful for learning markdown and how to interpret them and render them as a part of the webpage.
+Complete the implementation of Wiki encyclopedia. Was useful for learning markdown and how to interpret them and render them as a part of the webpage.
 
 </div>
 
@@ -85,7 +85,7 @@
 
 [ commerce ](./commerce/)
 
-    An eBay-like e-commerce auction site that will allow users to post auction listings, place bids on listings, comment on those listings, and add listings to a “watchlist".
+An eBay-like e-commerce auction site that will allow users to post auction listings, place bids on listings, comment on those listings, and add listings to a “watchlist".
 
 </div>
 
@@ -98,7 +98,7 @@
 [ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
 
 
-    A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
 
@@ -110,7 +110,7 @@
 [ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
 
 
-    A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
 
@@ -122,7 +122,7 @@
 [ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
 
 
-    A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
 
@@ -134,6 +134,6 @@
 [ google search mimic (link)](https://github.com/QuietkidAniket/googlesearchmimic.github.io)
 
 
-    A website that mimics the overall google search page aesthetics and redirects each request to the google server.
+A website that mimics the overall google search page aesthetics and redirects each request to the google server.
 
 </div>
