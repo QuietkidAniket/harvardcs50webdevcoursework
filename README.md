@@ -6,7 +6,7 @@
 ## This repository stores all the 6 projects I had completed in order to earn the
 
 
-<div  class="flex" style="align-items:center;justify-content:center"> 
+<div  style="display:flex;align-items:center;justify-content:center"> 
 
 
 <div><img src="assets/img/harvarduniv.png" style="height:100px;padding:50px;"></div>
